@@ -18,21 +18,29 @@ default_colors = {
 }
 
 attack_color_map = {
-    "phy_att_1": default_colors["orange"],
-    "phy_att_2": default_colors["orange"],
-    "phy_att_3": default_colors["orange"],
-    "phy_att_4": default_colors["orange"],
-    "phy_norm": default_colors["blue_green"],
+    "phy_att_1": default_colors["purple"],
+    "phy_att_2": default_colors["blue_green"],
+    "phy_att_3": default_colors["yellow"],
+    "phy_att_4": default_colors["pink"],
+    "phy_norm": default_colors["grey"],
 }
 
 attacks_colors = [
-    "purple", "blue", "yellow","orange", "pink", "brown",
+    "purple",
+    "blue",
+    "pink",
+    "yellow",
+    "orange",
+    "brown",
 ]
 
-normal_colors = [ "blue_green", "green" ,  ]
+normal_colors = [
+    "grey",
+    "blue_green",
+    "green",
+]
 
 st.set_page_config(layout="wide")
-
 
 
 # load data
@@ -53,19 +61,27 @@ df_phy_norm = pd.read_csv(
 )
 
 # create label color map
-all_labels = set ( df_phy_1["Label"].unique() )
-all_labels.update( set ( df_phy_2["Label"].unique() ) )
-all_labels.update( set ( df_phy_3["Label"].unique() ) )
-all_labels.update( set ( df_phy_4["Label"].unique() ) )
-all_labels.update( set ( df_phy_norm["Label"].unique() ) )
+all_labels = set(df_phy_1["Label"].unique())
+all_labels.update(set(df_phy_2["Label"].unique()))
+all_labels.update(set(df_phy_3["Label"].unique()))
+all_labels.update(set(df_phy_4["Label"].unique()))
+all_labels.update(set(df_phy_norm["Label"].unique()))
+all_labels = sorted(all_labels)
+
+all_symbols = ["square", "diamond", "cross", "x", "triangle-up", "triangle-down"]
 
 label_color_map = {}
+label_symbol_map = {}
 i = 0
 for label in all_labels:
     if label == "normal":
         label_color_map[label] = default_colors[normal_colors[0]]
+        label_symbol_map[label] = "circle"
     else:
         label_color_map[label] = default_colors[attacks_colors[i]]
-        i += 1 
+        label_symbol_map[label] = all_symbols[i]
+        i += 1
         if i >= len(attacks_colors):
             raise ValueError("Not enough colors in attacks_colors to map all labels.")
+        if i >= len(all_symbols):
+            raise ValueError("Not enough symbols to map all labels.")
