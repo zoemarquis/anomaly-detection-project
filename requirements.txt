@@ -1,1 +1,8 @@
-# TODO
+# B+TODO
+
+pandas
+sklearn # c'est quoi déjà le pip install associé ?
+plotly
+numpy
+plotly
+scikit-learn

@@ -1,5 +1,3 @@
-# + 20 min
-
 from streamlit_defaults import *
 import numpy as np
 

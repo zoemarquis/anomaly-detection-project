@@ -43,6 +43,7 @@ normal_colors = [
 st.set_page_config(layout="wide")
 
 
+
 # load data
 df_phy_1 = pd.read_csv(
     "dataset/Physical dataset/phy_att_1.csv", encoding="utf-16", sep="\t"
@@ -59,6 +60,19 @@ df_phy_4 = pd.read_csv(
 df_phy_norm = pd.read_csv(
     "dataset/Physical dataset/phy_norm.csv", encoding="utf-16", sep="\t"
 )
+
+for df in [df_phy_1, df_phy_2, df_phy_3, df_phy_4, df_phy_norm]:
+    df["Time"] = pd.to_datetime(df["Time"], errors='coerce', format='%Y-%m-%d %H:%M:%S')
+
+
+dfs ={
+    "phy_att_1": df_phy_1,
+    "phy_att_2": df_phy_2,
+    "phy_att_3": df_phy_3,
+    "phy_att_4": df_phy_4,
+    "phy_norm": df_phy_norm,
+}
+
 
 # create label color map
 all_labels = set(df_phy_1["Label"].unique())
