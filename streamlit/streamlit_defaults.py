@@ -1,9 +1,45 @@
 import streamlit as st
-
-import plotly.express as px
-import plotly.graph_objects as go
-
 import pandas as pd
+import plotly.express as px
+from pickleshare import PickleShareDB
+import plotly.graph_objects as go
+import os
+
+data_dir = '../prep_data' 
+db = PickleShareDB(os.path.join(data_dir, 'kity'))
+
+if 'df_phy_1' in db:
+    df_phy_1 = db['df_phy_1']
+else:
+    print("df_phy_1 n'est pas trouvé dans la base de données.")
+if 'df_phy_2' in db:
+    df_phy_2 = db['df_phy_2']
+else:
+    print("df_phy_2 n'est pas trouvé dans la base de données.")
+if 'df_phy_3' in db:
+    df_phy_3 = db['df_phy_3']
+else:
+    print("df_phy_3 n'est pas trouvé dans la base de données.")
+if 'df_phy_4' in db:
+    df_phy_4 = db['df_phy_4']
+else:
+    print("df_phy_4 n'est pas trouvé dans la base de données.")
+if 'df_phy_norm' in db:
+    df_phy_norm = db['df_phy_norm']
+else:
+    print("df_phy_norm n'est pas trouvé dans la base de données.")
+if 'df_phy_attack' in db:
+    df_phy_attack = db['df_phy_attack']
+if 'df_phy_all' in db:
+    df_phy_all = db['df_phy_all']
+else:
+    print("df_phy_all n'est pas trouvé dans la base de données.")
+if 'dict_dfs' in db:
+    dict_dfs = db['dict_dfs']
+else:
+    print("dict_dfs n'est pas trouvé dans la base de données.")
+
+st.set_page_config(layout="wide")
 
 default_colors = {
     "purple": "#4C2ED6",
@@ -40,40 +76,6 @@ normal_colors = [
     "green",
 ]
 
-st.set_page_config(layout="wide")
-
-
-
-# load data
-df_phy_1 = pd.read_csv(
-    "dataset/Physical dataset/phy_att_1.csv", encoding="utf-16", sep="\t"
-)
-df_phy_2 = pd.read_csv(
-    "dataset/Physical dataset/phy_att_2.csv", encoding="utf-16", sep="\t"
-)
-df_phy_3 = pd.read_csv(
-    "dataset/Physical dataset/phy_att_3.csv", encoding="utf-16", sep="\t"
-)
-df_phy_4 = pd.read_csv(
-    "dataset/Physical dataset/phy_att_4.csv", encoding="utf-8", sep=","
-)
-df_phy_norm = pd.read_csv(
-    "dataset/Physical dataset/phy_norm.csv", encoding="utf-16", sep="\t"
-)
-
-for df in [df_phy_1, df_phy_2, df_phy_3, df_phy_4, df_phy_norm]:
-    df["Time"] = pd.to_datetime(df["Time"], errors='coerce', format='%Y-%m-%d %H:%M:%S')
-
-
-dfs ={
-    "phy_att_1": df_phy_1,
-    "phy_att_2": df_phy_2,
-    "phy_att_3": df_phy_3,
-    "phy_att_4": df_phy_4,
-    "phy_norm": df_phy_norm,
-}
-
-
 # create label color map
 all_labels = set(df_phy_1["Label"].unique())
 all_labels.update(set(df_phy_2["Label"].unique()))
@@ -99,3 +101,4 @@ for label in all_labels:
             raise ValueError("Not enough colors in attacks_colors to map all labels.")
         if i >= len(all_symbols):
             raise ValueError("Not enough symbols to map all labels.")
+        

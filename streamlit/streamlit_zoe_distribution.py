@@ -1,12 +1,9 @@
 from streamlit_defaults import *
 
-# Charger tous les dataframes dans un dictionnaire
-dataframes = dfs 
-
 # Sidebar pour la sélection du dataframe
 st.sidebar.header("Sélection du DataFrame")
-selected_df_name = st.sidebar.selectbox("Choisissez un DataFrame :", list(dataframes.keys()))
-selected_df = dataframes[selected_df_name]
+selected_df_name = st.sidebar.selectbox("Choisissez un DataFrame :", list(dict_dfs.keys()))
+selected_df = dict_dfs[selected_df_name]
 
 # Sidebar pour la sélection de la colonne
 st.sidebar.header("Options de Visualisation")

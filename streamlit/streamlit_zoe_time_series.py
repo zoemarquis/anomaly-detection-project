@@ -63,14 +63,6 @@ st.plotly_chart(fig)
 
 st.title("Barcode Chart pour 5 Séries Temporelles")
 
-datasets = {
-    "phy_att_1": df_phy_1,
-    "phy_att_2": df_phy_2,
-    "phy_att_3": df_phy_3,
-    "phy_att_4": df_phy_4,
-    "phy_norm": df_phy_norm,
-}
-
 max_len = max(len(df) for df in datasets.values())
 
 fig = make_subplots(
