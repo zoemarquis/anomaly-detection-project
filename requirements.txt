@@ -1,4 +1,4 @@
-# B+TODO
+# TODO
 
 pandas
 sklearn # c'est quoi déjà le pip install associé ?

@@ -1,4 +1,4 @@
-from streamlit_defaults import *  # Assure-toi que cette bibliothèque est bien configurée pour charger les DataFrames
+from streamlit_config.streamlit_defaults import *  # Assure-toi que cette bibliothèque est bien configurée pour charger les DataFrames
 
 # Sidebar pour la sélection du dataframe
 st.sidebar.header("Sélection du DataFrame")

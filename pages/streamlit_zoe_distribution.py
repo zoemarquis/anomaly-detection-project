@@ -1,4 +1,4 @@
-from streamlit_defaults import *
+from streamlit_config.streamlit_defaults import *
 
 # Sidebar pour la sélection du dataframe
 st.sidebar.header("Sélection du DataFrame")

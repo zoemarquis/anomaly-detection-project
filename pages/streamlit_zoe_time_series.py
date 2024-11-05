@@ -1,4 +1,4 @@
-from streamlit_defaults import *
+from streamlit_config.streamlit_defaults import *
 import numpy as np
 
 from plotly.subplots import make_subplots
