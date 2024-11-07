@@ -7,3 +7,5 @@ numpy
 plotly
 scikit-learn
 pickleshare
+tensorflow
+memory-profiler
