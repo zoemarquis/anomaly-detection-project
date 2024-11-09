@@ -56,7 +56,7 @@ for _,v1 in attack_types.items():
 
 keys_to_keep = [
     'data', 'model_type', 'attack_type', 'confusion_matrix',
-    'precision', 'recall', 'tnr', 'accuracy', 'f1', 
+    'precision', 'recall', 'tnr', 'fpr', 'accuracy', 'f1', 
     'balanced_accuracy', 'mcc', 'fit_time', 'predict_time', 
     'fit_memory_usage', 'predict_memory_usage'
 ]

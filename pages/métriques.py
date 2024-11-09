@@ -16,9 +16,7 @@ else:
     model_names = model_names_netw
 model_choice = st.selectbox("Sélectionnez le modèle :", list(model_names.keys()))
 
-st.write("**Type de données sélectionné :**", dataset_choice)
-st.write("**Type d'attaque sélectionné :**", attack_choice)
-st.write("**Modèle sélectionné :**", model_choice)
+st.divider()
 
 dataset_name = f"{selec_dataset[dataset_choice]}_results_{model_names[model_choice]}_{attack_types[attack_choice]}"
 st.write(f"Nom du dataset généré : {dataset_name}")
@@ -30,8 +28,7 @@ st.table(df_selected)
 
 df_attack = df_results[(df_results["attack_type"] == attack_types[attack_choice])]
 
-# TODO : associer une couleur à un modèle et afficher la légende
-# default_colors -> créer map pour couleur
+st.divider()
 
 ### Radar Chart ###
 balanced_measures = ['model_type', 'precision', 'recall', 'tnr','accuracy']
@@ -51,7 +48,7 @@ with col1:
             theta=df_radar_balanced.columns[1:],
             fill='toself',
             name=model,
-            line_color=default_colors[colors_model_names.get(model, 'blue')],  # Utiliser la couleur du modèle
+            line_color=default_colors[colors_model_names.get(model, 'blue')], 
             showlegend=True
         ))
     
@@ -79,7 +76,7 @@ with col2:
             theta=df_radar_unbalanced.columns[1:],
             fill='toself',
             name=model,
-            line_color=default_colors[colors_model_names.get(model, 'blue')],  # Utiliser la couleur du modèle
+            line_color=default_colors[colors_model_names.get(model, 'blue')],  
             showlegend=True
         ))
 
@@ -95,22 +92,140 @@ with col2:
     fig_radar_unbalanced.update_layout(width=800, height=600)
     st.plotly_chart(fig_radar_unbalanced, use_container_width=True)
 
-# ### Précision-Rappel Plot ###
-# # Tracer la Précision et le Rappel pour chaque modèle sélectionné
-# fig, ax = plt.subplots()
-# for model in model_names.keys():
-#     subset = df_attack[df_attack['model_type'] == model]
-#     precision = subset['precision']
-#     recall = subset['recall']
-#     ax.scatter(recall, precision, label=model)
-#     ax.annotate(model, (recall, precision), textcoords="offset points", xytext=(5,5), ha='center')
-# 
-# # Configurer les axes et le titre
-# ax.set_xlabel("Recall")
-# ax.set_ylabel("Precision")
-# ax.set_title(f"Comparaison Précision-Rappel pour l'attaque {attack_types[attack_choice]}")
-# ax.legend()
-# st.pyplot(fig)
+st.divider()
+
+## Précision-Rappel, TPR-TNR, TPR-FPR ##
+
+fig_precision_recall = go.Figure()
+fig_precision_recall.add_trace(go.Scatter(
+    x=[1, 1],
+    y=[0, 1],
+    mode='lines',
+    line=dict(color='white', dash='dot'),
+    showlegend=False
+))
+fig_precision_recall.add_trace(go.Scatter(
+    x=[0, 1],
+    y=[1, 1],
+    mode='lines',
+    line=dict(color='white', dash='dot'),
+    showlegend=False
+))
+for model in df_attack['model_type'].unique():
+    subset = df_attack[df_attack['model_type'] == model]
+    precision = subset['precision'].values[0]
+    recall = subset['recall'].values[0]
+    color = default_colors[colors_model_names.get(model, 'blue')]  
+    fig_precision_recall.add_trace(go.Scatter(
+        x=[recall],
+        y=[precision],
+        mode='markers',
+        name=model,
+        text=[model],
+        textposition='top center',
+        marker=dict(color=color, size=10)
+    ))
+fig_precision_recall.update_layout(
+    title="Comparaison Précision-Rappel pour chaque modèle",
+    xaxis_title="Recall",
+    yaxis_title="Precision",
+    xaxis=dict(range=[0, 1.1]),  
+    yaxis=dict(range=[0, 1.1]), 
+    showlegend=True,
+    template="plotly_white", 
+)
+
+fig_tpr_tnr = go.Figure()
+fig_tpr_tnr.add_trace(go.Scatter(
+    x=[1, 1],
+    y=[0, 1],
+    mode='lines',
+    line=dict(color='white', dash='dot'),
+    showlegend=False
+))
+fig_tpr_tnr.add_trace(go.Scatter(
+    x=[0, 1],
+    y=[1, 1],
+    mode='lines',
+    line=dict(color='white', dash='dot'),
+    showlegend=False
+))
+for model in df_attack['model_type'].unique():
+    subset = df_attack[df_attack['model_type'] == model]
+    tpr = subset['recall'].values[0]
+    tnr = subset['tnr'].values[0]
+    color = default_colors[colors_model_names.get(model, 'blue')]  
+    fig_tpr_tnr.add_trace(go.Scatter(
+        x=[tnr],
+        y=[tpr],
+        mode='markers',
+        name=model,
+        text=[model],
+        textposition='top center',
+        marker=dict(color=color, size=10)
+    ))
+fig_tpr_tnr.update_layout(
+    title="Comparaison TPR vs TNR pour chaque modèle",
+    xaxis_title="True Negative Rate",
+    yaxis_title="True Positive Rate",
+    xaxis=dict(range=[0, 1.1]),  
+    yaxis=dict(range=[0, 1.1]),  
+    showlegend=True,
+    template="plotly_white", 
+)
+
+fig_tpr_fpr = go.Figure()
+fig_tpr_fpr.add_trace(go.Scatter(
+    x=[1, 1],
+    y=[0, 1],
+    mode='lines',
+    line=dict(color='white', dash='dot'),
+    showlegend=False
+))
+fig_tpr_fpr.add_trace(go.Scatter(
+    x=[0, 1],
+    y=[1, 1],
+    mode='lines',
+    line=dict(color='white', dash='dot'),
+    showlegend=False
+))
+for model in df_attack['model_type'].unique():
+    subset = df_attack[df_attack['model_type'] == model]
+    tpr = subset['recall'].values[0]
+    fpr = subset['fpr'].values[0]
+    color = default_colors[colors_model_names.get(model, 'blue')]  
+    fig_tpr_fpr.add_trace(go.Scatter(
+        x=[fpr],
+        y=[tpr],
+        mode='markers',
+        name=model,
+        text=[model],
+        textposition='top center',
+        marker=dict(color=color, size=10)
+    ))
+fig_tpr_fpr.update_layout(
+    title="Comparaison TPR vs FPR pour chaque modèle",
+    xaxis_title="False Positive Rate",
+    yaxis_title="True Positive Rate",
+    xaxis=dict(range=[0, 1.1]),  
+    yaxis=dict(range=[0, 1.1]),  
+    showlegend=True,
+    template="plotly_white", 
+)
+
+# Créer des colonnes dans Streamlit
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    st.plotly_chart(fig_precision_recall)
+with col2:
+    st.plotly_chart(fig_tpr_tnr)
+with col3:
+    st.plotly_chart(fig_tpr_fpr)
+
+
+
+
 
 # TODO : matrice de confusion pour chaque attaque.
 # TODO : Comparaison avec les résultats publiés : Tableau comparatif des performances de chaque modèle par rapport aux résultats du papier associé.
@@ -120,3 +235,5 @@ with col2:
 # # Visualisation des matrices de confusion pour chaque modèle et attaque
 # vérif bon ordre et meme ordre partout 
 # pourattaque sélectionnée : autre coouleur 
+
+
