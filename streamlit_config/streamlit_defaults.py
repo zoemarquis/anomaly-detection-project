@@ -41,6 +41,30 @@ if 'dict_dfs' in db:
     dict_dfs = db['dict_dfs']
 else:
     print("dict_dfs n'est pas trouvé dans la base de données.")
+if 'df_load_phy_1' in db:
+    df_load_phy_1 = db['df_load_phy_1']
+else:
+    print("df_load_phy_1 n'est pas trouvé dans la base de données.")
+if 'df_load_phy_2' in db:
+    df_load_phy_2 = db['df_load_phy_2'] 
+else:
+    print("df_load_phy_2 n'est pas trouvé dans la base de données.")
+if 'df_load_phy_3' in db:
+    df_load_phy_3 = db['df_load_phy_3']
+else:
+    print("df_load_phy_3 n'est pas trouvé dans la base de données.")
+if 'df_load_phy_4' in db:
+    df_load_phy_4 = db['df_load_phy_4']
+else:
+    print("df_load_phy_4 n'est pas trouvé dans la base de données.")
+if 'df_load_phy_norm' in db:
+    df_load_phy_norm = db['df_load_phy_norm']
+else:
+    print("df_load_phy_norm n'est pas trouvé dans la base de données.")
+if 'dict_dfs_load' in db:
+    dict_dfs_load = db['dict_dfs_load']
+else:
+    print("dict_dfs_load n'est pas trouvé dans la base de données.")
 
 st.set_page_config(layout="wide")
 

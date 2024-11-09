@@ -63,7 +63,7 @@ st.plotly_chart(fig)
 
 st.title("Barcode Chart pour 5 Séries Temporelles")
 
-max_len = max(len(df) for df in datasets.values())
+max_len = max(len(df) for df in dict_dfs.values())
 
 fig = make_subplots(
     rows=5,
@@ -73,7 +73,7 @@ fig = make_subplots(
 )
 
 # Ajout de chaque dataset en tant que scatter plot, étiré sur la largeur maximale
-for i, (key, df) in enumerate(datasets.items(), start=1):
+for i, (key, df) in enumerate(dict_dfs.items(), start=1):
     x_values = list(range(max_len))  # Plage d'index pour alignement maximal
     y_values = i * np.ones(max_len)
 
@@ -110,7 +110,7 @@ fig.update_xaxes(title_text="Time", showticklabels=True, row=5, col=1)
 
 
 # Mise à jour de l'axe y pour chaque sous-graphe pour afficher le nom du dataset
-for i, key in enumerate(datasets.keys(), start=1):
+for i, key in enumerate(dict_dfs.keys(), start=1):
     fig.update_yaxes(title_text=key, row=i, col=1, showticklabels=False) #, orientation="horizontal")
 
 
