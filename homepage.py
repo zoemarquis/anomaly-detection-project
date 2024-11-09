@@ -17,3 +17,7 @@ st.write("TODO : faire un petit guuide des différentes pages streamlit")
 st.markdown("coucou :sunglasses:")
 
 st.write("Viz répartition des valeurs de flow sensor ")
+
+
+# TODO : Un bref résumé des objectifs du projet (analyse de modèles pour la détection d’attaques).
+# Une présentation de l’interface et des pages disponibles pour orienter l'utilisateur.

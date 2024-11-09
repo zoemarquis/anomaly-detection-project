@@ -1,0 +1,72 @@
+import pandas as pd
+from pickleshare import PickleShareDB
+import os
+
+selec_dataset = {
+    "données physiques" : "PHY",
+    "données réseaux" : "NETW",
+}
+
+model_names_phy = {
+    "CNN 1D" : "cnn1d",
+    # "KNN" : "knn",
+    # "CART" : "cart",
+    # "Random Forest" : "rf",
+    # "XGBoost" : "xgb",
+    # "MLP" : "mlp",
+}
+
+colors_model_names = {
+    "CNN 1D" : "purple",
+    "KNN" : "blue_green",
+    "CART" : "green",
+    "Random Forest" : "yellow",
+    "XGBoost" : "orange",
+    "MLP" : "pink",
+}
+
+model_names_netw = {
+    "KNN" : "knn",
+    "CART" : "cart",
+    "Random Forest" : "rf",
+    "XGBoost" : "xgb",
+    "MLP" : "mlp",
+}
+
+attack_types = {
+    "détection d'attaque" : "labeln",
+    "DoS" : "label_DoS",
+    "MITM" : "label_MITM",
+    "physical fault" : "label_physical fault",
+    "scan" : "label_scan",
+}
+
+
+data_dir = 'prep_data' 
+db = PickleShareDB(os.path.join(data_dir, 'kity'))
+
+files_phy = []
+files_netw = []
+
+for _,v1 in attack_types.items():
+    for _,v2 in model_names_phy.items():
+        files_phy.append(f"PHY_results_{v2}_{v1}")
+    for _,v2 in model_names_netw.items():
+        files_netw.append(f"NETW_{v2}_{v1}")
+
+keys_to_keep = [
+    'data', 'model_type', 'attack_type', 'confusion_matrix',
+    'precision', 'recall', 'tnr', 'accuracy', 'f1', 
+    'balanced_accuracy', 'mcc', 'fit_time', 'predict_time', 
+    'fit_memory_usage', 'predict_memory_usage'
+]
+
+data_list = []
+
+for file in files_phy:
+    data = db[file]
+    filtered_data = {key: (str(data[key]) if key == 'confusion_matrix' else data[key]) for key in keys_to_keep if key in data}
+    filtered_data['filename'] = file
+    data_list.append(filtered_data)
+
+df_results = pd.DataFrame(data_list)

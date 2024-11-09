@@ -5,8 +5,11 @@ from pickleshare import PickleShareDB
 import plotly.graph_objects as go
 import os
 
-data_dir = '../prep_data' 
+data_dir = 'prep_data' 
 db = PickleShareDB(os.path.join(data_dir, 'kity'))
+
+
+df_phy_1 = db['df_phy_1']
 
 if 'df_phy_1' in db:
     df_phy_1 = db['df_phy_1']
