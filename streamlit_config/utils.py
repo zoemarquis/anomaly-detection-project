@@ -35,10 +35,10 @@ model_names_netw = {
 
 attack_types = {
     "détection d'attaque" : "labeln",
-    "DoS" : "label_DoS",
-    "MITM" : "label_MITM",
-    "physical fault" : "label_physical fault",
-    "scan" : "label_scan",
+    "DoS" : "DoS",
+    "MITM" : "MITM",
+    "physical fault" : "physical fault",
+    "scan" : "scan",
 }
 
 

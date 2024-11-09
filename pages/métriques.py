@@ -1,10 +1,6 @@
 from streamlit_config.streamlit_defaults import *
-from streamlit_config.utils import *    
-import plotly.express as px
+from streamlit_config.utils import *  
 import plotly.graph_objects as go
-import matplotlib.pyplot as plt
-import seaborn as sns
-import pandas as pd
 
 st.title("Comparaison des modèles pour la détection d'attaques")
 
@@ -237,3 +233,7 @@ with col3:
 # pourattaque sélectionnée : autre coouleur 
 
 
+
+
+
+st.sidebar.title("TODO")
