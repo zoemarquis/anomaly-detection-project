@@ -42,19 +42,22 @@ st.title("Bump Chart des Labels pour df_phy_1")
 # Création du bump chart
 fig = go.Figure()
 
-fig.add_trace(go.Scatter(
-    x=df_phy_1['Time'],
-    y=df_phy_1['Label'],
-    mode='lines+markers',
-))
+fig.add_trace(
+    go.Scatter(
+        x=df_phy_1["Time"],
+        y=df_phy_1["Label"],
+        mode="lines+markers",
+    )
+)
 
 # Mise à jour de la mise en page
-fig.update_layout(title="Bump Chart des Labels au Fil du Temps",
-                  xaxis_title="Time",
-                  yaxis_title="Label",
-                  )
+fig.update_layout(
+    title="Bump Chart des Labels au Fil du Temps",
+    xaxis_title="Time",
+    yaxis_title="Label",
+)
 
-fig.update_yaxes(categoryorder='array', categoryarray=all_labels)
+fig.update_yaxes(categoryorder="array", categoryarray=all_labels)
 
 # Affichage du graphique dans Streamlit
 st.plotly_chart(fig)
@@ -101,7 +104,7 @@ for i, (key, df) in enumerate(dict_dfs.items(), start=1):
 fig.update_layout(
     height=500,
     title_text="Barcode Chart Aligné pour 5 Séries Temporelles",
-    template="simple_white"
+    template="simple_white",
 )
 
 
@@ -111,12 +114,12 @@ fig.update_xaxes(title_text="Time", showticklabels=True, row=5, col=1)
 
 # Mise à jour de l'axe y pour chaque sous-graphe pour afficher le nom du dataset
 for i, key in enumerate(dict_dfs.keys(), start=1):
-    fig.update_yaxes(title_text=key, row=i, col=1, showticklabels=False) #, orientation="horizontal")
-
+    fig.update_yaxes(
+        title_text=key, row=i, col=1, showticklabels=False
+    )  # , orientation="horizontal")
 
 
 st.plotly_chart(fig)
-
 
 
 # TODO : légende
@@ -136,11 +139,10 @@ fig = px.scatter(
     opacity=0.8,
     # template="simple_white",
     height=400,
-    marginal_x= "rug", # vraiment pas mal !
+    marginal_x="rug",  # vraiment pas mal !
 )
 
 st.plotly_chart(fig)
-
 
 
 # ---------------------------------------------------------------------
@@ -150,10 +152,10 @@ st.title("Bump Chart des Labels pour les séries temporelles alignées à Temps 
 
 
 datasets = {
-    "phy_att_1": (df_phy_1, 'purple'),
-    "phy_att_2": (df_phy_2, 'blue_green'),
-    "phy_att_3": (df_phy_3, 'yellow'),
-    "phy_att_4": (df_phy_4, 'pink'),
+    "phy_att_1": (df_phy_1, "purple"),
+    "phy_att_2": (df_phy_2, "blue_green"),
+    "phy_att_3": (df_phy_3, "yellow"),
+    "phy_att_4": (df_phy_4, "pink"),
 }
 
 # Création de la figure
@@ -162,16 +164,22 @@ fig = go.Figure()
 # Ajout de chaque dataset au graphique avec temps normalisé
 for name, (df, color) in datasets.items():
     df = df.copy()  # Créer une copie pour éviter de modifier l'original
-    df['Time'] = (df['Time'] - df['Time'].min()).dt.total_seconds() / (60*60*24)  # Normaliser à temps 0 (en jours)
+    df["Time"] = (df["Time"] - df["Time"].min()).dt.total_seconds() / (
+        60 * 60 * 24
+    )  # Normaliser à temps 0 (en jours)
 
-    fig.add_trace(go.Scatter(
-        x=df['Time'],
-        y=df['Label'],
-        mode='lines+markers',
-        name=name,
-        marker=dict(color=default_colors[color], size=2),  # Taille réduite pour rendre les points très discrets
-        line=dict(color=default_colors[color], width=1),   # Épaisseur de ligne fine
-    ))
+    fig.add_trace(
+        go.Scatter(
+            x=df["Time"],
+            y=df["Label"],
+            mode="lines+markers",
+            name=name,
+            marker=dict(
+                color=default_colors[color], size=2
+            ),  # Taille réduite pour rendre les points très discrets
+            line=dict(color=default_colors[color], width=1),  # Épaisseur de ligne fine
+        )
+    )
 
 # Mise à jour de la mise en page
 fig.update_layout(
@@ -181,7 +189,7 @@ fig.update_layout(
 )
 
 # Ordre des catégories pour l'axe y
-fig.update_yaxes(categoryorder='array', categoryarray=all_labels)
+fig.update_yaxes(categoryorder="array", categoryarray=all_labels)
 
 # Affichage du graphique dans Streamlit
 st.plotly_chart(fig)

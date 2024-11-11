@@ -5,64 +5,64 @@ from pickleshare import PickleShareDB
 import plotly.graph_objects as go
 import os
 
-data_dir = 'prep_data' 
-db = PickleShareDB(os.path.join(data_dir, 'kity'))
+data_dir = "prep_data"
+db = PickleShareDB(os.path.join(data_dir, "kity"))
 
 
-df_phy_1 = db['df_phy_1']
+df_phy_1 = db["df_phy_1"]
 
-if 'df_phy_1' in db:
-    df_phy_1 = db['df_phy_1']
+if "df_phy_1" in db:
+    df_phy_1 = db["df_phy_1"]
 else:
     print("df_phy_1 n'est pas trouvé dans la base de données.")
-if 'df_phy_2' in db:
-    df_phy_2 = db['df_phy_2']
+if "df_phy_2" in db:
+    df_phy_2 = db["df_phy_2"]
 else:
     print("df_phy_2 n'est pas trouvé dans la base de données.")
-if 'df_phy_3' in db:
-    df_phy_3 = db['df_phy_3']
+if "df_phy_3" in db:
+    df_phy_3 = db["df_phy_3"]
 else:
     print("df_phy_3 n'est pas trouvé dans la base de données.")
-if 'df_phy_4' in db:
-    df_phy_4 = db['df_phy_4']
+if "df_phy_4" in db:
+    df_phy_4 = db["df_phy_4"]
 else:
     print("df_phy_4 n'est pas trouvé dans la base de données.")
-if 'df_phy_norm' in db:
-    df_phy_norm = db['df_phy_norm']
+if "df_phy_norm" in db:
+    df_phy_norm = db["df_phy_norm"]
 else:
     print("df_phy_norm n'est pas trouvé dans la base de données.")
-if 'df_phy_attack' in db:
-    df_phy_attack = db['df_phy_attack']
-if 'df_phy_all' in db:
-    df_phy_all = db['df_phy_all']
+if "df_phy_attack" in db:
+    df_phy_attack = db["df_phy_attack"]
+if "df_phy_all" in db:
+    df_phy_all = db["df_phy_all"]
 else:
     print("df_phy_all n'est pas trouvé dans la base de données.")
-if 'dict_dfs' in db:
-    dict_dfs = db['dict_dfs']
+if "dict_dfs" in db:
+    dict_dfs = db["dict_dfs"]
 else:
     print("dict_dfs n'est pas trouvé dans la base de données.")
-if 'df_load_phy_1' in db:
-    df_load_phy_1 = db['df_load_phy_1']
+if "df_load_phy_1" in db:
+    df_load_phy_1 = db["df_load_phy_1"]
 else:
     print("df_load_phy_1 n'est pas trouvé dans la base de données.")
-if 'df_load_phy_2' in db:
-    df_load_phy_2 = db['df_load_phy_2'] 
+if "df_load_phy_2" in db:
+    df_load_phy_2 = db["df_load_phy_2"]
 else:
     print("df_load_phy_2 n'est pas trouvé dans la base de données.")
-if 'df_load_phy_3' in db:
-    df_load_phy_3 = db['df_load_phy_3']
+if "df_load_phy_3" in db:
+    df_load_phy_3 = db["df_load_phy_3"]
 else:
     print("df_load_phy_3 n'est pas trouvé dans la base de données.")
-if 'df_load_phy_4' in db:
-    df_load_phy_4 = db['df_load_phy_4']
+if "df_load_phy_4" in db:
+    df_load_phy_4 = db["df_load_phy_4"]
 else:
     print("df_load_phy_4 n'est pas trouvé dans la base de données.")
-if 'df_load_phy_norm' in db:
-    df_load_phy_norm = db['df_load_phy_norm']
+if "df_load_phy_norm" in db:
+    df_load_phy_norm = db["df_load_phy_norm"]
 else:
     print("df_load_phy_norm n'est pas trouvé dans la base de données.")
-if 'dict_dfs_load' in db:
-    dict_dfs_load = db['dict_dfs_load']
+if "dict_dfs_load" in db:
+    dict_dfs_load = db["dict_dfs_load"]
 else:
     print("dict_dfs_load n'est pas trouvé dans la base de données.")
 
@@ -78,6 +78,10 @@ default_colors = {
     "pink": "#FA186E",
     "brown": "#BD6244",
     "grey": "#696260",
+    "Bleu clair": "#ADD8E6",
+    "Bleu moyen": "#6495ED",
+    "Bleu vif": "##0095FF",
+    "Bleu foncé": "#00008B",
 }
 
 attack_color_map = {
@@ -128,4 +132,3 @@ for label in all_labels:
             raise ValueError("Not enough colors in attacks_colors to map all labels.")
         if i >= len(all_symbols):
             raise ValueError("Not enough symbols to map all labels.")
-        
