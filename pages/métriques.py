@@ -3,6 +3,8 @@ from streamlit_config.utils import *
 from streamlit_config.article_data import *
 import plotly.graph_objects as go
 
+import matplotlib.pyplot as plt
+
 st.title("Comparaison des modèles pour la détection d'attaques")
 
 dataset_choice = st.sidebar.selectbox(
@@ -74,8 +76,47 @@ styled_df = df_selected.style.format(
     [{'selector': 'td, th', 'props': [('text-align', 'left')]}]  # Aligner à gauche tous les éléments (td et th)
 )
 
-st.write("### Résultats pour l'attaque sélectionnée")
-st.table(styled_df)
+
+# Diviser l'espace en 2 colonnes
+col1, col2 = st.columns([8, 2])  # La première colonne (pour le tableau) occupe 2/3 de l'espace, la seconde (pour la légende) 1/3
+
+with col1:
+    # Affichage du tableau avec le style
+    st.write("### Résultats pour l'attaque sélectionnée")
+    st.table(styled_df)
+
+with col2:
+    # Ajouter une légende avec des carrés colorés
+    # st.write("### Légende des couleurs")
+    st.markdown("<h5 style='font-size: 25px;'>Légende des couleurs</h5>", unsafe_allow_html=True)
+    # margin vertical
+    st.markdown("<div style='margin-top: 10px; margin-bottom: 10px;'></div>", unsafe_allow_html=True)
+
+    # Création de l'affichage avec des carrés de couleur
+    fig, ax = plt.subplots(figsize=(2, 5))  # Taille de la légende plus haute pour mieux afficher tous les carrés
+    # Ajouter les carrés et les textes, en ajustant les positions y pour éviter qu'ils ne se chevauchent
+    ax.add_patch(plt.Rectangle((0, 0), 1, 1.5, color='#96D400'))  # Carré vert foncé
+    ax.text(1.1, 0.5, "Valeur maximale", verticalalignment='center', fontsize=20, color='white')
+    ax.add_patch(plt.Rectangle((0, -1.5), 1, 1, color='#29D49D'))  # Carré vert clair
+    ax.text(1.1, -1, "Deuxième valeur la plus élevée", verticalalignment='center', fontsize=20, color='white')
+    ax.add_patch(plt.Rectangle((0, -3), 1, 1, color='#FF4600'))  # Carré orange
+    ax.text(1.1, -2.5, "Deuxième valeur la plus basse", verticalalignment='center', fontsize=20, color='white')
+    ax.add_patch(plt.Rectangle((0, -4.5), 1, 1, color='#FA186E'))  # Carré rose
+    ax.text(1.1, -4, "Valeur minimale", verticalalignment='center', fontsize=20, color='white')
+
+    # Retirer les axes
+    ax.set_axis_off()
+
+    # Ajuster les limites de l'axe pour s'assurer que tout soit visible
+    ax.set_xlim(0, 1.5)
+    ax.set_ylim(-5.5, 1)
+
+    fig.patch.set_alpha(0.0)  # Rendre l'arrière-plan de la figure transparent
+    ax.set_facecolor('none')  # Rendre l'arrière-plan des axes transparent
+
+
+    # Afficher la légende dans streamlit
+    st.pyplot(fig, transparent=True)
 
 st.divider()
 
