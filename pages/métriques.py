@@ -5,10 +5,10 @@ import plotly.graph_objects as go
 
 st.title("Comparaison des modèles pour la détection d'attaques")
 
-dataset_choice = st.selectbox(
+dataset_choice = st.sidebar.selectbox(
     "Sélectionnez le type de données :", list(selec_dataset.keys())
 )
-attack_choice = st.selectbox(
+attack_choice = st.sidebar.selectbox(
     "Sélectionnez le type d'attaque :", list(attack_types.keys())
 )
 # if selec_dataset[dataset_choice] == "PHY":
@@ -20,6 +20,10 @@ attack_choice = st.selectbox(
 st.divider()
 
 df_attack = df_results[(df_results["attack_type"] == attack_types[attack_choice])]
+df_attack_without_article = df_attack[
+    (df_attack["model_type"] != "KNN article") & (df_attack["model_type"] != "RF article") &
+    (df_attack["model_type"] != "SVM article") & (df_attack["model_type"] != "NB article")
+]
 
 # si labeln sélectionné ajouter les données de l'article
 if attack_types[attack_choice] == "labeln":
@@ -56,11 +60,22 @@ df_selected = df_selected.set_index("Modèle")
 
 styled_df = df_selected.style.format(
     precision=2, na_rep="(pas de valeur)"
-).highlight_max(subset=df_selected.columns[0:], axis=0, color="green")
+).apply(
+    lambda col: [
+        "background-color: rgba(150, 212, 0, 0.5); color: white;" if v == col.max() else
+        "background-color: rgba(41, 212, 157, 0.5); color: black;" if v == col.nlargest(2).iloc[-1] else
+        "background-color: rgba(255, 70, 0, 0.5); color: black;" if v == col.nsmallest(2).iloc[-1] else
+        "background-color: rgba(250, 24, 110, 0.5); color: black;" if v == col.min() else
+        ""
+        for v in col
+    ],
+    subset=df_selected.columns
+).set_table_styles(
+    [{'selector': 'td, th', 'props': [('text-align', 'left')]}]  # Aligner à gauche tous les éléments (td et th)
+)
 
-st.write("### Résultats pour l'attaque sélectionnés")
+st.write("### Résultats pour l'attaque sélectionnée")
 st.table(styled_df)
-
 
 st.divider()
 
@@ -198,7 +213,7 @@ fig_tpr_tnr.add_trace(
         showlegend=False,
     )
 )
-for model in df_attack["model_type"].unique():
+for model in df_attack_without_article["model_type"].unique():
     subset = df_attack[df_attack["model_type"] == model]
     tpr = subset["recall"].values[0]
     tnr = subset["tnr"].values[0]
@@ -243,7 +258,7 @@ fig_tpr_fpr.add_trace(
         showlegend=False,
     )
 )
-for model in df_attack["model_type"].unique():
+for model in df_attack_without_article["model_type"].unique():
     subset = df_attack[df_attack["model_type"] == model]
     tpr = subset["recall"].values[0]
     fpr = subset["fpr"].values[0]
@@ -278,16 +293,3 @@ with col2:
     st.plotly_chart(fig_tpr_tnr)
 with col3:
     st.plotly_chart(fig_tpr_fpr)
-
-
-# TODO : matrice de confusion pour chaque attaque.
-# TODO : Comparaison avec les résultats publiés : Tableau comparatif des performances de chaque modèle par rapport aux résultats du papier associé.
-
-## Matrices de confusion ##
-
-# # Visualisation des matrices de confusion pour chaque modèle et attaque
-# vérif bon ordre et meme ordre partout
-# pourattaque sélectionnée : autre coouleur
-
-
-st.sidebar.title("TODO")

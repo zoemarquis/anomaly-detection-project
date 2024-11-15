@@ -19,25 +19,9 @@ dataset_choice = st.selectbox(
 attack_choice = st.selectbox(
     "Sélectionnez le type d'attaque :", list(attack_types.keys())
 )
-if selec_dataset[dataset_choice] == "PHY":
-    model_names = model_names_phy
-else:
-    model_names = model_names_netw
-model_choice = st.selectbox("Sélectionnez le modèle :", list(model_names.keys()))
-
 st.divider()
-
-dataset_name = f"{selec_dataset[dataset_choice]}_results_{model_names[model_choice]}_{attack_types[attack_choice]}"
-st.write(f"Nom du dataset généré : {dataset_name}")
-
-# afficher chaque valeur de chaque métrique pour le modèle et l'attaque sélectionnés
-# TODO : afficher ça "pretty"
-df_selected = df_results[(df_results["filename"] == dataset_name)]
-st.table(df_selected)
 
 df_attack = df_results[(df_results["attack_type"] == attack_types[attack_choice])]
-
-st.divider()
 
 time_measures = df_attack[["model_type", "fit_time", "predict_time"]]
 memory_measures = df_attack[["model_type", "fit_memory_usage", "predict_memory_usage"]]

@@ -28,8 +28,6 @@ model_choice = st.sidebar.selectbox(
 dataset_name = f"{selec_dataset[dataset_choice]}_results_{model_names[model_choice]}_{attack_types[attack_choice]}"
 df_selected = df_results[(df_results["filename"] == dataset_name)]
 
-st.table(df_selected)
-
 conf_matrix_str = df_selected["confusion_matrix"].iloc[0]
 conf_matrix_str_cleaned = re.sub(r"\s+", ",", conf_matrix_str)
 conf_matrix_str_cleaned = conf_matrix_str_cleaned.replace("][", "],[")
@@ -45,7 +43,7 @@ else:
     labels = list(map(str, labels))
 
 
-fig = go.Figure(
+fig1 = go.Figure(
     data=go.Heatmap(
         z=conf_matrix,
         x=labels,
@@ -59,16 +57,22 @@ fig = go.Figure(
     )
 )
 
-fig.update_layout(
-    title="Matrice de confusion interactive",
+fig1.update_layout(
+    title="Matrice de confusion binaire" if attack_types[attack_choice] == "labeln" else "Matrice de confusion multiclasse",
     xaxis_title="Valeurs prédites",
     yaxis_title="Valeurs réelles",
     xaxis=dict(tickmode="array", tickvals=np.arange(len(labels))),
     yaxis=dict(tickmode="array", tickvals=np.arange(len(labels))),
-    autosize=True,
+    height=600,
+    width=700,
+    # autosize=True,
 )
 
-st.plotly_chart(fig)
+
+col1, col2 = st.columns(2)
+
+with col1: 
+    st.plotly_chart(fig1)
 
 
 if attack_types[attack_choice] != "labeln":
@@ -80,9 +84,7 @@ if attack_types[attack_choice] != "labeln":
 
     conf_matrix_01 = np.array([[tn, fp], [fn, tp]])
 
-    print(conf_matrix_01)
-
-    fig = go.Figure(
+    fig2 = go.Figure(
         data=go.Heatmap(
             z=conf_matrix_01,
             x=[0, 1],
@@ -96,13 +98,18 @@ if attack_types[attack_choice] != "labeln":
         )
     )
 
-    fig.update_layout(
-        title="Matrice de confusion 0/1",
+    fig2.update_layout(
+        title="Matrice de confusion binaire résumée pour l'attaque spécifiée", 
         xaxis_title="Valeurs prédites",
         yaxis_title="Valeurs réelles",
         xaxis=dict(tickmode="array", tickvals=np.arange(2)),
         yaxis=dict(tickmode="array", tickvals=np.arange(2)),
-        autosize=True,
+        height=600,
+        width=700,
+        # autosize=True,
     )
 
-    st.plotly_chart(fig)
+    # st.plotly_chart(fig2)
+    with col2:
+        st.plotly_chart(fig2, use_container_width=True)
+
