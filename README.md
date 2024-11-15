@@ -25,3 +25,6 @@ ensutie hy_CNN1D
 
 
 enfin streamlit
+
+
+# todo dans quel ordre notebooks

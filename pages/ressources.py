@@ -11,13 +11,6 @@ import plotly.graph_objects as go
 
 st.sidebar.title("TODO")
 
-# TODO : pourquoi valeur négative pour memory ??
-# TODO : problème pour valeurs des modèles de label
-# TODO : mémoire
-
-# Utilisation de la mémoire RAM pour chaque modèle, illustrée par des diagrammes ou des barres pour une comparaison rapide.
-
-
 st.title("TODO")
 
 dataset_choice = st.selectbox(
@@ -51,20 +44,26 @@ memory_measures = df_attack[["model_type", "fit_memory_usage", "predict_memory_u
 
 # Créer une figure avec deux sous-graphiques (1 ligne, 2 colonnes) sans partager l'axe Y
 fig = sp.make_subplots(
-    rows=1,
+    rows=2,
     cols=2,
-    subplot_titles=["Temps d'Entraînement", "Temps de Prédiction"],
+    subplot_titles=[
+        "Temps d'Entraînement",
+        "Temps de Prédiction",
+        "Mémoire pour l'Entraînement",
+        "Mémoire pour la Prédiction",
+    ],
     shared_yaxes=False,  # Désactiver le partage de l'axe Y pour des échelles différentes
+    vertical_spacing=0.15,  # Augmenter l'espacement entre les sous-graphiques
 )
 
-# Ajouter les barres horizontales pour le temps d'entraînement dans le premier sous-graphe
+# temps d'entraînement 
 for i, row in time_measures.iterrows():
     fig.add_trace(
         go.Bar(
             y=[row["model_type"]],  # Chaque modèle est sur l'axe Y
             x=[
                 row["fit_time"]
-            ],  # Chaque barre a une longueur qui est la valeur du temps d'entraînement
+            ], 
             name=f"Temps d'Entraînement ({row['model_type']})",
             orientation="h",  # Spécifier que les barres sont horizontales
             marker=dict(
@@ -76,7 +75,7 @@ for i, row in time_measures.iterrows():
         col=1,
     )
 
-# Ajouter les barres horizontales pour le temps de prédiction dans le second sous-graphe
+# temps de prédiction 
 for i, row in time_measures.iterrows():
     fig.add_trace(
         go.Bar(
@@ -95,19 +94,64 @@ for i, row in time_measures.iterrows():
         col=2,
     )
 
+# Mémoire pour l'entraînement
+for i, row in memory_measures.iterrows():
+    fig.add_trace(
+        go.Bar(
+            y=[row["model_type"]],
+            x=[row["fit_memory_usage"]],
+            name=f"Mémoire pour l'Entraînement ({row['model_type']}) en Mo",
+            orientation="h",
+            marker=dict(
+                color=default_colors[colors_model_names.get(row["model_type"], "green")]
+            ),
+            width=0.8,
+        ),
+        row=2,
+        col=1,
+    )
+
+# Mémoire pour la prédiction
+for i, row in memory_measures.iterrows():
+    fig.add_trace(
+        go.Bar(
+            y=[row["model_type"]],
+            x=[row["predict_memory_usage"]],
+            name=f"Mémoire pour la Prédiction ({row['model_type']} en Mo)",
+            orientation="h",
+            marker=dict(
+                color=default_colors[colors_model_names.get(row["model_type"], "orange")]
+            ),
+            width=0.8,
+        ),
+        row=2,
+        col=2,
+    )
+
 # Configurer le titre et l'affichage des axes pour les temps
 fig.update_layout(
     title="Comparaison des Temps d'Entraînement et de Prédiction",
-    xaxis_title="Temps (secondes)",
-    yaxis_title="Modèles",
+    # xaxis_title="Temps (secondes)",
+    # yaxis_title="Modèles",
     template="plotly_white",
     bargap=0.1,  # Laisser un espace entre les barres pour plus de clarté
     showlegend=False,
 )
 
+fig.update_layout(
+    title="Comparaison des Temps d'Entraînement et de Prédiction",
+    template="plotly_white",
+    bargap=0.1,  # Laisser un espace entre les barres pour plus de clarté
+    showlegend=False,
+    height=1000,  # Ajustez la hauteur (plus grand pour mieux visualiser)
+)
+
 # Limiter l'axe X de 0 à 60 pour les deux sous-graphiques
 fig.update_xaxes(range=[0, 60], row=1, col=1)  # Temps d'Entraînement
 fig.update_xaxes(range=[0, 10], row=1, col=2)  # Temps de Prédiction
+fig.update_xaxes(range=[0, 50], row=2, col=1)  # Mémoire pour l'Entraînement (en Mo)
+fig.update_xaxes(range=[0, 50], row=2, col=2)  # Mémoire pour la Prédiction (en Mo)
+
 
 # Afficher le graphique dans Streamlit
 st.plotly_chart(fig)
