@@ -75,7 +75,6 @@ fig.update_layout(
 st.plotly_chart(fig)
 
 ### Visualisation des données Valv ###
-st.sidebar.subheader("Visualisation combinée des colonnes Valv")
 valv_columns = [f"Valv_{i}" for i in range(1, 23)]
 valv_df = filtered_df[["Time"] + valv_columns]
 fig = px.line(
@@ -95,7 +94,6 @@ st.plotly_chart(fig)
 
 
 ### Visualisation des données Pump ###
-st.sidebar.subheader("Visualisation combinée des colonnes Pump")
 valv_columns = [f"Pump_{i}" for i in range(1, 7)]
 valv_df = filtered_df[["Time"] + valv_columns]
 fig = px.line(
@@ -114,7 +112,6 @@ fig.update_layout(
 st.plotly_chart(fig)
 
 ### Visualisation des données Tank ###
-st.sidebar.subheader("Visualisation combinée des colonnes Tank")
 valv_columns = [f"Tank_{i}" for i in range(1, 5)]
 valv_df = filtered_df[["Time"] + valv_columns]
 fig = px.line(
@@ -134,7 +131,6 @@ st.plotly_chart(fig)
 
 
 ### Visualisation des données Flow_sensor ###
-st.sidebar.subheader("Visualisation combinée des colonnes Flow_sensor")
 valv_columns = [f"Flow_sensor_{i}" for i in range(1, 5)]
 valv_df = filtered_df[["Time"] + valv_columns]
 fig = px.line(

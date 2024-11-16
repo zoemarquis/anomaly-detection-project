@@ -10,11 +10,11 @@ from sklearn.preprocessing import LabelEncoder
 
 # 1. on sépare un gros dataset attaque (1234) et un dataset normal
 # a. on ne prend que les valeurs numériques
-# b. on fait un one hot encoding de toutes les colonnes non numériques TODO 
+# b. on fait un one hot encoding de toutes les colonnes non numériques 
 
 # 2. on regroupe tous les dataframe ensemble
 # a. que les valeurs numériques
-# b. on fait un one hot encoding de toutes les colonnes non numériques TODO 
+# b. on fait un one hot encoding de toutes les colonnes non numériques 
 
 
 def get_df_encoded(
