@@ -8,10 +8,7 @@ import pandas as pd
 import plotly.subplots as sp
 import plotly.graph_objects as go
 
-
-st.sidebar.title("TODO")
-
-st.title("TODO")
+st.title("Évaluation de la consommation de ressources pour l'apprentissage et la détection")
 
 dataset_choice = st.selectbox(
     "Sélectionnez le type de données :", list(selec_dataset.keys())
