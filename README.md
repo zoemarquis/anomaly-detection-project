@@ -22,32 +22,32 @@ Le dépôt contient :
 1. Téléchargez les données via le lien fourni dans l'énoncé
 2. Décompresssez les fichiers dans un répertoire ```datasets```
 
-vous devez obtenir la structure suivante 
-datasets/
-│
-├── Network dataset/
-│   ├── csv/
-│   │   ├── attack_1.csv
-│   │   ├── attack_2.csv
-│   │   ├── attack_3.csv
-│   │   ├── attack_4.csv
-│   │   └── normal.csv
-│   │
-│   ├── pcap/
-│       ├── attack_1.pcap
-│       ├── attack_2.pcap
-│       ├── attack_3.pcap
-│       ├── attack_4.pcap
-│       └── normal.pcap
-│
-├── Physical dataset/
-│   ├── phy_att_1.csv
-│   ├── phy_att_2.csv
-│   ├── phy_att_3.csv
-│   ├── phy_att_4.csv
-│   └── phy_norm.csv
-│
-└── README.xlsx
+vous devez obtenir la structure suivante   
+datasets/  
+│  
+├── Network dataset/  
+│   ├── csv/  
+│   │   ├── attack_1.csv  
+│   │   ├── attack_2.csv  
+│   │   ├── attack_3.csv  
+│   │   ├── attack_4.csv  
+│   │   └── normal.csv  
+│   │  
+│   ├── pcap/  
+│       ├── attack_1.pcap  
+│       ├── attack_2.pcap  
+│       ├── attack_3.pcap  
+│       ├── attack_4.pcap  
+│       └── normal.pcap  
+│  
+├── Physical dataset/  
+│   ├── phy_att_1.csv  
+│   ├── phy_att_2.csv  
+│   ├── phy_att_3.csv  
+│   ├── phy_att_4.csv  
+│   └── phy_norm.csv  
+│  
+└── README.xlsx  
 
 Assurez-vous que les fichiers sont organisés comme indiqué avant de passer à l'étape suivante.
 
