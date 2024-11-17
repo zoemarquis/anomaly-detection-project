@@ -61,6 +61,10 @@ if "df_load_phy_norm" in db:
     df_load_phy_norm = db["df_load_phy_norm"]
 else:
     print("df_load_phy_norm n'est pas trouvé dans la base de données.")
+if "df_load_phy_all" in db:
+    df_load_phy_all = db["df_load_phy_all"]
+else:
+    print("df_load_phy_all n'est pas trouvé dans la base de données.")
 if "dict_dfs_load" in db:
     dict_dfs_load = db["dict_dfs_load"]
 else:
