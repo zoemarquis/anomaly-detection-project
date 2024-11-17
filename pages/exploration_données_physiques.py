@@ -55,34 +55,33 @@ st.sidebar.subheader("Répartition des labels par dataset")
 # sélection du dataset et regarder distribution de colonnes sélec tionnées au cours du temps
 
 
-
 # st.title("Analyse exploratoire des données")
-# 
+#
 # # Aperçu du dataset
 # st.subheader("Aperçu des données")
 # st.write(df.head())
-# 
+#
 # # Statistiques générales
 # st.subheader("Statistiques descriptives")
 # st.write(df.describe())
-# 
+#
 # # Analyse des distributions
 # st.subheader("Distributions des variables")
 # variable = st.selectbox("Choisir une variable à analyser", df.columns)
 # fig = px.histogram(df, x=variable, nbins=30, title=f"Distribution de {variable}")
 # st.plotly_chart(fig)
-# 
+#
 # # Corrélations
 # st.subheader("Corrélations")
 # corr_fig = px.imshow(df.corr(), title="Matrice de corrélations", color_continuous_scale="RdBu", zmin=-1, zmax=1)
 # st.plotly_chart(corr_fig)
-# 
+#
 # # Labels
 # st.subheader("Répartition des labels")
 # if "label_column" in df.columns:
 #     label_fig = px.pie(df, names="label_column", title="Répartition des labels")
 #     st.plotly_chart(label_fig)
-# 
+#
 # # Valeurs manquantes
 # st.subheader("Valeurs manquantes")
 # missing_data = df.isnull().mean() * 100

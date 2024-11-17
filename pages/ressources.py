@@ -8,7 +8,9 @@ import pandas as pd
 import plotly.subplots as sp
 import plotly.graph_objects as go
 
-st.title("Évaluation de la consommation de ressources pour l'apprentissage et la détection")
+st.title(
+    "Évaluation de la consommation de ressources pour l'apprentissage et la détection"
+)
 
 dataset_choice = st.selectbox(
     "Sélectionnez le type de données :", list(selec_dataset.keys())
@@ -37,14 +39,12 @@ fig = sp.make_subplots(
     vertical_spacing=0.15,  # Augmenter l'espacement entre les sous-graphiques
 )
 
-# temps d'entraînement 
+# temps d'entraînement
 for i, row in time_measures.iterrows():
     fig.add_trace(
         go.Bar(
             y=[row["model_type"]],  # Chaque modèle est sur l'axe Y
-            x=[
-                row["fit_time"]
-            ], 
+            x=[row["fit_time"]],
             name=f"Temps d'Entraînement ({row['model_type']})",
             orientation="h",  # Spécifier que les barres sont horizontales
             marker=dict(
@@ -56,7 +56,7 @@ for i, row in time_measures.iterrows():
         col=1,
     )
 
-# temps de prédiction 
+# temps de prédiction
 for i, row in time_measures.iterrows():
     fig.add_trace(
         go.Bar(
@@ -101,7 +101,9 @@ for i, row in memory_measures.iterrows():
             name=f"Mémoire pour la Prédiction ({row['model_type']} en Mo)",
             orientation="h",
             marker=dict(
-                color=default_colors[colors_model_names.get(row["model_type"], "orange")]
+                color=default_colors[
+                    colors_model_names.get(row["model_type"], "orange")
+                ]
             ),
             width=0.8,
         ),
