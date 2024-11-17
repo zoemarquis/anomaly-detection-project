@@ -73,7 +73,7 @@ st.sidebar.markdown(
     """
     - [Énoncé du projet](enonce.pdf)  
     - [Rapport final](rapport.pdf)  
-    - [Code source](https://github.com/nom-utilisateur/projet-protection)
+    - [Code source](https://github.com/zoemarquis/projet_protection)
     """
 )
 

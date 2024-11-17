@@ -14,12 +14,12 @@ selected_df = dict_dfs_load[selected_df_name]
 
 
 selected_df["Time"] = pd.to_datetime(selected_df["Time"])
-tick_vals = selected_df["Time"][::60]  # Prendre un échantillon toutes les 10 lignes
+tick_vals = selected_df["Time"][::60]  # Prendre un échantillon toutes les 60 valeurs: 1 par minute
 tick_text = tick_vals.dt.strftime("%H:%M")
 
 
-# Titre principal de la page
-st.title("Sélection de l'intervalle de temps pour la visualisation")
+st.title("Exploration des données")
+st.subheader("Visualisation des données physiques (avant nettoyage) - Séries temporelles (résolution temporelle par minute)")
 
 # Récupérer les valeurs uniques de la colonne 'Time'
 time_values = selected_df["Time"].sort_values().unique()
