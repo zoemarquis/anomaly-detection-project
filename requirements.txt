@@ -9,3 +9,5 @@ scikit-learn
 pickleshare
 tensorflow
 memory-profiler
+matplotlib
+os
