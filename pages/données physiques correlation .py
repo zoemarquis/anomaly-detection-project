@@ -10,11 +10,11 @@ from sklearn.preprocessing import LabelEncoder
 
 # 1. on sépare un gros dataset attaque (1234) et un dataset normal
 # a. on ne prend que les valeurs numériques
-# b. on fait un one hot encoding de toutes les colonnes non numériques 
+# b. on fait un one hot encoding de toutes les colonnes non numériques
 
 # 2. on regroupe tous les dataframe ensemble
 # a. que les valeurs numériques
-# b. on fait un one hot encoding de toutes les colonnes non numériques 
+# b. on fait un one hot encoding de toutes les colonnes non numériques
 
 
 def get_df_encoded(
@@ -24,12 +24,14 @@ def get_df_encoded(
     df_encoded = pd.get_dummies(df, columns=cat_cols)
     return df_encoded
 
+
 for df in [df_phy_1, df_phy_2, df_phy_3, df_phy_4, df_phy_norm]:
-    df["Flow_sensor_1"] = pd.to_numeric(df["Flow_sensor_1"], errors='coerce')
-    df['Flow_sensor_2'] = df['Flow_sensor_2'].apply(lambda x: 4000 if x else 0).astype(int)
+    df["Flow_sensor_1"] = pd.to_numeric(df["Flow_sensor_1"], errors="coerce")
+    df["Flow_sensor_2"] = (
+        df["Flow_sensor_2"].apply(lambda x: 4000 if x else 0).astype(int)
+    )
 
 print()
-
 
 
 # a : numériques
@@ -126,4 +128,3 @@ with col3:
 
 
 # 1 b et 2 b : trop lourd l'encodage: trop de colonnes
-

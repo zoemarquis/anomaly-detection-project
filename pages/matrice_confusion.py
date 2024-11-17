@@ -58,7 +58,9 @@ fig1 = go.Figure(
 )
 
 fig1.update_layout(
-    title="Matrice de confusion binaire" if attack_types[attack_choice] == "labeln" else "Matrice de confusion multiclasse",
+    title="Matrice de confusion binaire"
+    if attack_types[attack_choice] == "labeln"
+    else "Matrice de confusion multiclasse",
     xaxis_title="Valeurs prédites",
     yaxis_title="Valeurs réelles",
     xaxis=dict(tickmode="array", tickvals=np.arange(len(labels))),
@@ -71,7 +73,7 @@ fig1.update_layout(
 
 col1, col2 = st.columns(2)
 
-with col1: 
+with col1:
     st.plotly_chart(fig1)
 
 
@@ -99,7 +101,7 @@ if attack_types[attack_choice] != "labeln":
     )
 
     fig2.update_layout(
-        title="Matrice de confusion binaire résumée pour l'attaque spécifiée", 
+        title="Matrice de confusion binaire résumée pour l'attaque spécifiée",
         xaxis_title="Valeurs prédites",
         yaxis_title="Valeurs réelles",
         xaxis=dict(tickmode="array", tickvals=np.arange(2)),
@@ -112,4 +114,3 @@ if attack_types[attack_choice] != "labeln":
     # st.plotly_chart(fig2)
     with col2:
         st.plotly_chart(fig2, use_container_width=True)
-
