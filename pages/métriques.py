@@ -3,12 +3,14 @@ from streamlit_config.utils import *
 from streamlit_config.article_data import *
 import plotly.graph_objects as go
 
+import matplotlib.pyplot as plt
+
 st.title("Comparaison des modèles pour la détection d'attaques")
 
-dataset_choice = st.selectbox(
+dataset_choice = st.sidebar.selectbox(
     "Sélectionnez le type de données :", list(selec_dataset.keys())
 )
-attack_choice = st.selectbox(
+attack_choice = st.sidebar.selectbox(
     "Sélectionnez le type d'attaque :", list(attack_types.keys())
 )
 # if selec_dataset[dataset_choice] == "PHY":
@@ -20,6 +22,12 @@ attack_choice = st.selectbox(
 st.divider()
 
 df_attack = df_results[(df_results["attack_type"] == attack_types[attack_choice])]
+df_attack_without_article = df_attack[
+    (df_attack["model_type"] != "KNN article")
+    & (df_attack["model_type"] != "RF article")
+    & (df_attack["model_type"] != "SVM article")
+    & (df_attack["model_type"] != "NB article")
+]
 
 # si labeln sélectionné ajouter les données de l'article
 if attack_types[attack_choice] == "labeln":
@@ -54,13 +62,107 @@ df_selected = df_selected.rename(
 
 df_selected = df_selected.set_index("Modèle")
 
-styled_df = df_selected.style.format(
-    precision=2, na_rep="(pas de valeur)"
-).highlight_max(subset=df_selected.columns[0:], axis=0, color="green")
+styled_df = (
+    df_selected.style.format(precision=2, na_rep="(pas de valeur)")
+    .apply(
+        lambda col: [
+            "background-color: rgba(150, 212, 0, 0.5); color: white;"
+            if v == col.max()
+            else "background-color: rgba(41, 212, 157, 0.5); color: black;"
+            if v == col.nlargest(2).iloc[-1]
+            else "background-color: rgba(255, 70, 0, 0.5); color: black;"
+            if v == col.nsmallest(2).iloc[-1]
+            else "background-color: rgba(250, 24, 110, 0.5); color: black;"
+            if v == col.min()
+            else ""
+            for v in col
+        ],
+        subset=df_selected.columns,
+    )
+    .set_table_styles(
+        [
+            {"selector": "td, th", "props": [("text-align", "left")]}
+        ]  # Aligner à gauche tous les éléments (td et th)
+    )
+)
 
-st.write("### Résultats pour l'attaque sélectionnés")
-st.table(styled_df)
 
+# Diviser l'espace en 2 colonnes
+col1, col2 = st.columns(
+    [8, 2]
+)  # La première colonne (pour le tableau) occupe 2/3 de l'espace, la seconde (pour la légende) 1/3
+
+with col1:
+    # Affichage du tableau avec le style
+    st.write("### Résultats pour l'attaque sélectionnée")
+    st.table(styled_df)
+
+with col2:
+    # Ajouter une légende avec des carrés colorés
+    # st.write("### Légende des couleurs")
+    st.markdown(
+        "<h5 style='font-size: 25px;'>Légende des couleurs</h5>", unsafe_allow_html=True
+    )
+    # margin vertical
+    st.markdown(
+        "<div style='margin-top: 10px; margin-bottom: 10px;'></div>",
+        unsafe_allow_html=True,
+    )
+
+    # Création de l'affichage avec des carrés de couleur
+    fig, ax = plt.subplots(
+        figsize=(2, 5)
+    )  # Taille de la légende plus haute pour mieux afficher tous les carrés
+    # Ajouter les carrés et les textes, en ajustant les positions y pour éviter qu'ils ne se chevauchent
+    ax.add_patch(plt.Rectangle((0, 0), 1, 1.5, color="#96D400"))  # Carré vert foncé
+    ax.text(
+        1.1,
+        0.5,
+        "Valeur maximale",
+        verticalalignment="center",
+        fontsize=20,
+        color="white",
+    )
+    ax.add_patch(plt.Rectangle((0, -1.5), 1, 1, color="#29D49D"))  # Carré vert clair
+    ax.text(
+        1.1,
+        -1,
+        "Deuxième valeur la plus élevée",
+        verticalalignment="center",
+        fontsize=20,
+        color="white",
+    )
+    ax.add_patch(plt.Rectangle((0, -3), 1, 1, color="#FF4600"))  # Carré orange
+    ax.text(
+        1.1,
+        -2.5,
+        "Deuxième valeur la plus basse",
+        verticalalignment="center",
+        fontsize=20,
+        color="white",
+    )
+    ax.add_patch(plt.Rectangle((0, -4.5), 1, 1, color="#FA186E"))  # Carré rose
+    ax.text(
+        1.1,
+        -4,
+        "Valeur minimale",
+        verticalalignment="center",
+        fontsize=20,
+        color="white",
+    )
+
+    # Retirer les axes
+    ax.set_axis_off()
+
+    # Ajuster les limites de l'axe pour s'assurer que tout soit visible
+    ax.set_xlim(0, 1.5)
+    ax.set_ylim(-5.5, 1)
+
+    fig.patch.set_alpha(0.0)  # Rendre l'arrière-plan de la figure transparent
+    ax.set_facecolor("none")  # Rendre l'arrière-plan des axes transparent
+
+    # Afficher la légende dans streamlit
+    st.pyplot(fig, transparent=True)
 
 st.divider()
 
@@ -198,7 +300,7 @@ fig_tpr_tnr.add_trace(
         showlegend=False,
     )
 )
-for model in df_attack["model_type"].unique():
+for model in df_attack_without_article["model_type"].unique():
     subset = df_attack[df_attack["model_type"] == model]
     tpr = subset["recall"].values[0]
     tnr = subset["tnr"].values[0]
@@ -243,7 +345,7 @@ fig_tpr_fpr.add_trace(
         showlegend=False,
     )
 )
-for model in df_attack["model_type"].unique():
+for model in df_attack_without_article["model_type"].unique():
     subset = df_attack[df_attack["model_type"] == model]
     tpr = subset["recall"].values[0]
     fpr = subset["fpr"].values[0]
@@ -278,16 +380,3 @@ with col2:
     st.plotly_chart(fig_tpr_tnr)
 with col3:
     st.plotly_chart(fig_tpr_fpr)
-
-
-# TODO : matrice de confusion pour chaque attaque.
-# TODO : Comparaison avec les résultats publiés : Tableau comparatif des performances de chaque modèle par rapport aux résultats du papier associé.
-
-## Matrices de confusion ##
-
-# # Visualisation des matrices de confusion pour chaque modèle et attaque
-# vérif bon ordre et meme ordre partout
-# pourattaque sélectionnée : autre coouleur
-
-
-st.sidebar.title("TODO")
