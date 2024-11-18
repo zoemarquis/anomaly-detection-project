@@ -9,7 +9,7 @@ selec_dataset = {
 
 model_names_phy = {
     "CNN 1D": "cnn1d",
-    # "KNN" : "knn",
+    "KNN" : "knn",
     # "CART" : "cart",
     # "Random Forest" : "rf",
     # "XGBoost" : "xgb",
