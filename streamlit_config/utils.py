@@ -9,11 +9,11 @@ selec_dataset = {
 
 model_names_phy = {
     "CNN 1D": "cnn1d",
-    # "KNN" : "knn",
-    # "CART" : "cart",
-    # "Random Forest" : "rf",
-    # "XGBoost" : "xgb",
-    # "MLP" : "mlp",
+    "KNN" : "knn",
+    "CART" : "cart",
+    "Random Forest" : "rf",
+    "XGBoost" : "xgb",
+    "MLP" : "mlp",
 }
 
 colors_model_names = {
