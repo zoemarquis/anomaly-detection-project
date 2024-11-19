@@ -58,7 +58,7 @@ for _, v1 in attack_types.items():
     for _, v2 in model_names_phy.items():
         files_phy.append(f"PHY_results_{v2}_{v1}")
     for _, v2 in model_names_netw.items():
-        files_netw.append(f"NETW_{v2}_{v1}")
+        files_netw.append(f"NET_{v2}_{v1}")
 
 keys_to_keep = [
     "data",
