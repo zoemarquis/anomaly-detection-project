@@ -22,6 +22,17 @@ attack_choice = st.sidebar.selectbox(
 st.divider()
 
 df_attack = df_results[(df_results["attack_type"] == attack_types[attack_choice])]
+df_attack = df_attack[df_attack["data"] == selec_dataset[dataset_choice]]
+
+# si labeln sélectionné ajouter les données de l'article
+if attack_types[attack_choice] == "labeln":
+    if dataset_choice == "données physiques":
+        article_data = article_data_phy
+    else:
+        article_data = article_data_netw
+    df_attack = pd.concat([df_attack, pd.DataFrame(article_data)], ignore_index=True)
+
+st.table(df_attack)
 df_attack_without_article = df_attack[
     (df_attack["model_type"] != "KNN article")
     & (df_attack["model_type"] != "RF article")
@@ -29,9 +40,8 @@ df_attack_without_article = df_attack[
     & (df_attack["model_type"] != "NB article")
 ]
 
-# si labeln sélectionné ajouter les données de l'article
-if attack_types[attack_choice] == "labeln":
-    df_attack = pd.concat([df_attack, pd.DataFrame(article_data)], ignore_index=True)
+
+
 
 # df_selected = df_results[(df_results["filename"] == dataset_name)]
 df_selected = df_attack[

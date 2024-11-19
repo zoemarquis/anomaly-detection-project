@@ -10,6 +10,7 @@ selec_dataset = {
 model_names_phy = {
     "CNN 1D": "cnn1d",
     "KNN" : "knn",
+    "KNN PCA" : "knn_pca",
     "CART" : "cart",
     "Random Forest" : "rf",
     "XGBoost" : "xgb",
@@ -19,6 +20,7 @@ model_names_phy = {
 colors_model_names = {
     "CNN 1D": "purple",
     "KNN": "blue_green",
+    "KNN PCA": "blue_green",
     "CART": "green",
     "Random Forest": "yellow",
     "XGBoost": "orange",
