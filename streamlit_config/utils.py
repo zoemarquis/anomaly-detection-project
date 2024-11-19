@@ -39,7 +39,15 @@ model_names_netw = {
     "MLP": "mlp",
 }
 
-attack_types = {
+attack_types_phy = {
+    "détection d'attaque": "labeln",
+    "DoS": "DoS",
+    "MITM": "MITM",
+    "physical fault": "physical fault",
+    "scan": "scan",
+}
+
+attack_types_net = { # TODO 
     "détection d'attaque": "labeln",
     "DoS": "DoS",
     "MITM": "MITM",
@@ -54,9 +62,11 @@ db = PickleShareDB(os.path.join(data_dir, "kity"))
 files_phy = []
 files_netw = []
 
-for _, v1 in attack_types.items():
+for _, v1 in attack_types_phy.items():
     for _, v2 in model_names_phy.items():
         files_phy.append(f"PHY_results_{v2}_{v1}")
+    
+for _, v1 in attack_types_net.items():
     for _, v2 in model_names_netw.items():
         files_netw.append(f"NET_{v2}_{v1}")
 

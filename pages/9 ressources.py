@@ -15,6 +15,12 @@ st.title(
 dataset_choice = st.sidebar.selectbox(
     "Sélectionnez le type de données :", list(selec_dataset.keys())
 )
+
+if selec_dataset[dataset_choice] == "PHY":
+    attack_types = attack_types_phy
+else:
+    attack_types = attack_types_net
+
 attack_choice = st.sidebar.selectbox(
     "Sélectionnez le type d'attaque :", list(attack_types.keys())
 )
