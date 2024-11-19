@@ -38,7 +38,8 @@ if attack_types[attack_choice] == "labeln":
         article_data = article_data_netw
     df_attack = pd.concat([df_attack, pd.DataFrame(article_data)], ignore_index=True)
 
-st.table(df_attack)
+# st.table(df_attack)
+
 df_attack_without_article = df_attack[
     (df_attack["model_type"] != "KNN article")
     & (df_attack["model_type"] != "RF article")
