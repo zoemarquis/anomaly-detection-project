@@ -12,13 +12,18 @@ st.title(
     "Évaluation de la consommation de ressources pour l'apprentissage et la détection"
 )
 
-dataset_choice = st.selectbox(
+dataset_choice = st.sidebar.selectbox(
     "Sélectionnez le type de données :", list(selec_dataset.keys())
 )
-attack_choice = st.selectbox(
+
+if selec_dataset[dataset_choice] == "PHY":
+    attack_types = attack_types_phy
+else:
+    attack_types = attack_types_net
+
+attack_choice = st.sidebar.selectbox(
     "Sélectionnez le type d'attaque :", list(attack_types.keys())
 )
-st.divider()
 
 df_attack = df_results[(df_results["attack_type"] == attack_types[attack_choice])]
 
@@ -126,14 +131,14 @@ fig.update_layout(
     template="plotly_white",
     bargap=0.1,  # Laisser un espace entre les barres pour plus de clarté
     showlegend=False,
-    height=1000,  # Ajustez la hauteur (plus grand pour mieux visualiser)
+    height=800,  # Ajustez la hauteur (plus grand pour mieux visualiser)
 )
 
 # Limiter l'axe X de 0 à 60 pour les deux sous-graphiques
 fig.update_xaxes(range=[0, 60], row=1, col=1)  # Temps d'Entraînement
-fig.update_xaxes(range=[0, 10], row=1, col=2)  # Temps de Prédiction
-fig.update_xaxes(range=[0, 50], row=2, col=1)  # Mémoire pour l'Entraînement (en Mo)
-fig.update_xaxes(range=[0, 50], row=2, col=2)  # Mémoire pour la Prédiction (en Mo)
+fig.update_xaxes(range=[0, 2], row=1, col=2)  # Temps de Prédiction
+fig.update_xaxes(range=[0, 30], row=2, col=1)  # Mémoire pour l'Entraînement (en Mo)
+fig.update_xaxes(range=[0, 10], row=2, col=2)  # Mémoire pour la Prédiction (en Mo)
 
 
 # Afficher le graphique dans Streamlit

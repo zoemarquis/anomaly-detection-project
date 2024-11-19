@@ -10,6 +10,12 @@ st.title("Comparaison des modèles pour la détection d'attaques")
 dataset_choice = st.sidebar.selectbox(
     "Sélectionnez le type de données :", list(selec_dataset.keys())
 )
+
+if selec_dataset[dataset_choice] == "PHY":
+    attack_types = attack_types_phy
+else:
+    attack_types = attack_types_net
+
 attack_choice = st.sidebar.selectbox(
     "Sélectionnez le type d'attaque :", list(attack_types.keys())
 )
@@ -22,6 +28,18 @@ attack_choice = st.sidebar.selectbox(
 st.divider()
 
 df_attack = df_results[(df_results["attack_type"] == attack_types[attack_choice])]
+df_attack = df_attack[df_attack["data"] == selec_dataset[dataset_choice]]
+
+# si labeln sélectionné ajouter les données de l'article
+if attack_types[attack_choice] == "labeln":
+    if dataset_choice == "données physiques":
+        article_data = article_data_phy
+    else:
+        article_data = article_data_netw
+    df_attack = pd.concat([df_attack, pd.DataFrame(article_data)], ignore_index=True)
+
+# st.table(df_attack)
+
 df_attack_without_article = df_attack[
     (df_attack["model_type"] != "KNN article")
     & (df_attack["model_type"] != "RF article")
@@ -29,9 +47,8 @@ df_attack_without_article = df_attack[
     & (df_attack["model_type"] != "NB article")
 ]
 
-# si labeln sélectionné ajouter les données de l'article
-if attack_types[attack_choice] == "labeln":
-    df_attack = pd.concat([df_attack, pd.DataFrame(article_data)], ignore_index=True)
+
+
 
 # df_selected = df_results[(df_results["filename"] == dataset_name)]
 df_selected = df_attack[
@@ -63,20 +80,24 @@ df_selected = df_selected.rename(
 df_selected = df_selected.set_index("Modèle")
 
 styled_df = (
-    df_selected.style.format(precision=2, na_rep="(pas de valeur)")
+    df_selected.style.format(precision=3, na_rep="(pas de valeur)")
     .apply(
-        lambda col: [
-            "background-color: rgba(150, 212, 0, 0.5); color: white;"
-            if v == col.max()
-            else "background-color: rgba(41, 212, 157, 0.5); color: black;"
-            if v == col.nlargest(2).iloc[-1]
-            else "background-color: rgba(255, 70, 0, 0.5); color: black;"
-            if v == col.nsmallest(2).iloc[-1]
-            else "background-color: rgba(250, 24, 110, 0.5); color: black;"
-            if v == col.min()
-            else ""
-            for v in col
-        ],
+        lambda col: (
+            [""] * len(col)  # Pas de style si toutes les valeurs sont identiques
+            if col.nunique() <= 1
+            else [
+                "background-color: rgba(150, 212, 0, 0.5); color: white;"
+                if v == col.max()
+                else "background-color: rgba(41, 212, 157, 0.5); color: black;"
+                if v == col.nlargest(2).iloc[-1]
+                else "background-color: rgba(255, 70, 0, 0.5); color: black;"
+                if v == col.nsmallest(2).iloc[-1]
+                else "background-color: rgba(250, 24, 110, 0.5); color: black;"
+                if v == col.min()
+                else ""
+                for v in col
+            ]
+        ),
         subset=df_selected.columns,
     )
     .set_table_styles(
