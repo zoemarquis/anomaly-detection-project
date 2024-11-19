@@ -79,20 +79,24 @@ df_selected = df_selected.rename(
 df_selected = df_selected.set_index("Modèle")
 
 styled_df = (
-    df_selected.style.format(precision=2, na_rep="(pas de valeur)")
+    df_selected.style.format(precision=3, na_rep="(pas de valeur)")
     .apply(
-        lambda col: [
-            "background-color: rgba(150, 212, 0, 0.5); color: white;"
-            if v == col.max()
-            else "background-color: rgba(41, 212, 157, 0.5); color: black;"
-            if v == col.nlargest(2).iloc[-1]
-            else "background-color: rgba(255, 70, 0, 0.5); color: black;"
-            if v == col.nsmallest(2).iloc[-1]
-            else "background-color: rgba(250, 24, 110, 0.5); color: black;"
-            if v == col.min()
-            else ""
-            for v in col
-        ],
+        lambda col: (
+            [""] * len(col)  # Pas de style si toutes les valeurs sont identiques
+            if col.nunique() <= 1
+            else [
+                "background-color: rgba(150, 212, 0, 0.5); color: white;"
+                if v == col.max()
+                else "background-color: rgba(41, 212, 157, 0.5); color: black;"
+                if v == col.nlargest(2).iloc[-1]
+                else "background-color: rgba(255, 70, 0, 0.5); color: black;"
+                if v == col.nsmallest(2).iloc[-1]
+                else "background-color: rgba(250, 24, 110, 0.5); color: black;"
+                if v == col.min()
+                else ""
+                for v in col
+            ]
+        ),
         subset=df_selected.columns,
     )
     .set_table_styles(

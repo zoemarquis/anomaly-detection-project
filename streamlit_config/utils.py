@@ -4,7 +4,7 @@ import os
 
 selec_dataset = {
     "données physiques": "PHY",
-    "données réseaux": "NETW",
+    "données réseaux": "NET",
 }
 
 model_names_phy = {
@@ -68,7 +68,7 @@ for _, v1 in attack_types_phy.items():
     
 for _, v1 in attack_types_net.items():
     for _, v2 in model_names_netw.items():
-        files_netw.append(f"NET_{v2}_{v1}")
+        files_netw.append(f"NET_results_{v2}_{v1}")
 
 keys_to_keep = [
     "data",
