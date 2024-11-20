@@ -55,7 +55,6 @@ Assurez-vous que les fichiers sont organisés comme indiqué avant de passer à 
 
 Assurez-vous d'avoir Python installé. Ensuite, exécutez :
 ```pip install -r requirements.txt```
-# TODO vérifier que vraiment tout package utile soit dedans
 
 ### 3. Exécuter les notebooks
 Les notebooks doivent être exécutés dans l'ordre suivant :

@@ -36,17 +36,23 @@ categorical_columns = selected_df.select_dtypes(include=["object", "category"]).
 datetime_columns = selected_df.select_dtypes(include=["datetime"]).columns.tolist()
 
 # Affichage sous forme de colonnes pour plus de lisibilité
-col1, col2 = st.columns(2)
+col1, col2 , col3= st.columns(3)
 
 with col1:
     st.write("### Colonnes numériques")
     st.write(f"**{len(numeric_columns)} colonnes**")
     st.write(numeric_columns if numeric_columns else "Aucune")
 
-with col2:
+with col3:
     st.write("### Colonnes catégorielles")
     st.write(f"**{len(categorical_columns)} colonnes**")
     st.write(categorical_columns if categorical_columns else "Aucune")
+
+with col2:  
+    boolean_columns = selected_df.select_dtypes(include=["bool"]).columns.tolist()
+    st.write("### Colonnes booléennes")
+    st.write(f"**{len(boolean_columns)} colonnes**")
+    st.write(boolean_columns if boolean_columns else "Aucune")
 
 # Statistiques descriptives
 st.subheader("3. Statistiques descriptives")
