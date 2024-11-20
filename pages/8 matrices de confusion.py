@@ -42,7 +42,7 @@ conf_matrix_str_cleaned = conf_matrix_str_cleaned.replace("][", "],[")
 conf_matrix_str_cleaned = conf_matrix_str_cleaned.replace("[,", "[")
 conf_matrix = ast.literal_eval(conf_matrix_str_cleaned)
 
-if attack_types[attack_choice] == "labeln":
+if attack_types[attack_choice] == "labeln" or (selec_dataset[dataset_choice] == "PHY" and model_names[model_choice] != "cnn1d"):
     labels = [0, 1]
 
 else:
@@ -87,9 +87,7 @@ col1, col2 = st.columns(2)
 with col1:
     st.plotly_chart(fig1)
 
-
-if attack_types[attack_choice] != "labeln":
-
+if (selec_dataset[dataset_choice] == "NETW" and attack_types [attack_choice]!="labeln") or (selec_dataset[dataset_choice] == "PHY" and model_names[model_choice] == "cnn1d" and attack_types[attack_choice] != "labeln"):
     tp = df_selected["TP"].iloc[0]
     tn = df_selected["TN"].iloc[0]
     fp = df_selected["FP"].iloc[0]
