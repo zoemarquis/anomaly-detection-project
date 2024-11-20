@@ -4,7 +4,7 @@ import os
 
 selec_dataset = {
     "données physiques": "PHY",
-    "données réseaux": "NET",
+    "données réseaux": "NETW",
 }
 
 model_names_phy = {
@@ -32,11 +32,11 @@ colors_model_names = {
 }
 
 model_names_netw = {
-    "KNN": "knn",
-    "CART": "cart",
-    "Random Forest": "rf",
-    "XGBoost": "xgb",
-    "MLP": "mlp",
+    "KNN": "KNN",
+    "CART": "CART",
+    "Random Forest": "RF",
+    "XGBoost": "XGBoost",
+    "MLP": "MLP",
 }
 
 attack_types_phy = {
@@ -68,7 +68,7 @@ for _, v1 in attack_types_phy.items():
     
 for _, v1 in attack_types_net.items():
     for _, v2 in model_names_netw.items():
-        files_netw.append(f"NET_results_{v2}_{v1}")
+        files_netw.append(f"NETW_results_{v2}_{v1}")
 
 keys_to_keep = [
     "data",
@@ -104,5 +104,16 @@ for file in files_phy:
     }
     filtered_data["filename"] = file
     data_list.append(filtered_data)
+
+for file in files_netw:
+    data = db[file]
+    filtered_data = {
+        key: (str(data[key]) if key == "confusion_matrix" else data[key])
+        for key in keys_to_keep
+        if key in data
+    }
+    filtered_data["filename"] = file
+    data_list.append(filtered_data)
+
 
 df_results = pd.DataFrame(data_list)

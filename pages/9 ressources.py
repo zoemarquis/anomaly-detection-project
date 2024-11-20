@@ -1,12 +1,7 @@
 from streamlit_config.streamlit_defaults import *
 from streamlit_config.utils import *
-import plotly.express as px
 import plotly.graph_objects as go
-import matplotlib.pyplot as plt
-import seaborn as sns
-import pandas as pd
 import plotly.subplots as sp
-import plotly.graph_objects as go
 
 st.title(
     "Évaluation de la consommation de ressources pour l'apprentissage et la détection"
@@ -15,6 +10,8 @@ st.title(
 dataset_choice = st.sidebar.selectbox(
     "Sélectionnez le type de données :", list(selec_dataset.keys())
 )
+
+print("SELEC DATASET CHOICE : " ,selec_dataset[dataset_choice])
 
 if selec_dataset[dataset_choice] == "PHY":
     attack_types = attack_types_phy
@@ -25,7 +22,8 @@ attack_choice = st.sidebar.selectbox(
     "Sélectionnez le type d'attaque :", list(attack_types.keys())
 )
 
-df_attack = df_results[(df_results["attack_type"] == attack_types[attack_choice])]
+df_attack = df_results[(df_results["data"] == selec_dataset[dataset_choice] )]
+df_attack = df_attack[(df_results["attack_type"] == attack_types[attack_choice])]
 
 time_measures = df_attack[["model_type", "fit_time", "predict_time"]]
 memory_measures = df_attack[["model_type", "fit_memory_usage", "predict_memory_usage"]]
@@ -137,8 +135,8 @@ fig.update_layout(
 # Limiter l'axe X de 0 à 60 pour les deux sous-graphiques
 fig.update_xaxes(range=[0, 60], row=1, col=1)  # Temps d'Entraînement
 fig.update_xaxes(range=[0, 2], row=1, col=2)  # Temps de Prédiction
-fig.update_xaxes(range=[0, 30], row=2, col=1)  # Mémoire pour l'Entraînement (en Mo)
-fig.update_xaxes(range=[0, 10], row=2, col=2)  # Mémoire pour la Prédiction (en Mo)
+fig.update_xaxes(range=[0, 60], row=2, col=1)  # Mémoire pour l'Entraînement (en Mo)
+fig.update_xaxes(range=[0, 60], row=2, col=2)  # Mémoire pour la Prédiction (en Mo)
 
 
 # Afficher le graphique dans Streamlit
