@@ -1,13 +1,15 @@
-# TODO
+smatplotlib
+memory-profiler # x
+
+numpy
 
 pandas
-sklearn # c'est quoi déjà le pip install associé ?
-plotly
-numpy
-plotly
-scikit-learn
 pickleshare
+plotly
+
+scikit-learn
+streamlit  
+
 tensorflow
-memory-profiler
-matplotlib
-os
+
+xgboost
