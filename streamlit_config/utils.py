@@ -52,7 +52,7 @@ attack_types_net = { # TODO
     "DoS": "DoS",
     "MITM": "MITM",
     "physical fault": "physical fault",
-    "scan": "scan",
+    "anomaly": "anomaly",
 }
 
 

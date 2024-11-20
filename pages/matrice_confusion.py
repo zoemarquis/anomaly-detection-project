@@ -46,7 +46,10 @@ if attack_types[attack_choice] == "labeln":
     labels = [0, 1]
 
 else:
-    label_mapping = db["label_mapping"]
+    if selec_dataset[dataset_choice] == "PHY":
+        label_mapping = db["label_mapping"]
+    else:
+        label_mapping = db["label_mapping_network"]
     labels = list(label_mapping.keys())
     labels = list(map(str, labels))
 
