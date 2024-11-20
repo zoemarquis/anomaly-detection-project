@@ -47,7 +47,7 @@ attack_types_phy = {
     "scan": "scan",
 }
 
-attack_types_net = { # TODO 
+attack_types_net = { 
     "détection d'attaque": "labeln",
     "DoS": "DoS",
     "MITM": "MITM",

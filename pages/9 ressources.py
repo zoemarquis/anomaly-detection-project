@@ -123,7 +123,7 @@ fig.update_layout(
 )
 
 fig.update_layout(
-    title="Comparaison des Temps d'Entraînement et de Prédiction",
+    title="Évaluation des temps et ressources (apprentissage et détection)",
     template="plotly_white",
     bargap=0.1,  # Laisser un espace entre les barres pour plus de clarté
     showlegend=False,

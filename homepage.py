@@ -95,10 +95,3 @@ st.markdown(
 - **Comparaison avec les performances publiées** dans l'article scientifique associé au dataset.  
 """
 )
-
-# Section de conclusion
-st.markdown(
-    """
-Ce projet offre une approche complète pour analyser et comparer les modèles de détection d'attaques sur des systèmes complexes.
-"""
-)

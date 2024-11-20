@@ -69,19 +69,18 @@ missing_values = selected_df.isnull().sum()
 st.write(missing_values[missing_values > 0])
 
 st.subheader("5. Analyse des labels")
-st.write("Répartition des labels :")
-# Analyse des labels
-if "Label" in selected_df.columns:
-    st.bar_chart(selected_df["Label"].value_counts())
-    st.write("Crosstabulation des labels et des autres colonnes :")
-    selected_col = st.selectbox("Choisissez une colonne pour crosstab :", selected_df.columns)
-    st.write(pd.crosstab(selected_df["Label"], selected_df[selected_col]))
+
+# # Analyse des labels
+# if "Label" in selected_df.columns:
+#     st.bar_chart(selected_df["Label"].value_counts())
+#     st.write("Crosstabulation des labels et des autres colonnes :")
+#     selected_col = st.selectbox("Choisissez une colonne pour crosstab :", selected_df.columns)
+#     st.write(pd.crosstab(selected_df["Label"], selected_df[selected_col]))
 
 
 dict_dfs_sans_all = {k: v for k, v in dict_dfs.items() if k != "all"}
 
 # --------------------------------------------------------------------
-st.sidebar.subheader("Répartition des labels par dataset")
 
 data_ = []
 unique_labels_ = set()
@@ -159,25 +158,22 @@ col_choice = st.selectbox("Choisissez une colonne pour visualiser la distributio
 
 col1, col2 = st.columns(2)
 
+fig_width = 6  # largeur en pouces
+fig_height = 4  # hauteur en pouces
+
 with col1:
     # Histogramme
     st.write(f"Histogramme de {col_choice}")
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(figsize=(fig_width, fig_height))
     sns.histplot(selected_df[col_choice], kde=True, ax=ax)
     st.pyplot(fig)
 
 with col2:
     # Boxplot
     st.write(f"Boxplot de {col_choice}")
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(figsize=(fig_width, fig_height))
     sns.boxplot(x=selected_df[col_choice], ax=ax)
     st.pyplot(fig)
-
-
-# # TODO : après nettoyage -> 6
-#
-# Histogrammes, distributions, diagrammes de dispersion pour les principales caractéristiques.
-# Distribution des classes de sortie, pour visualiser le déséquilibre des classes.
 
 st.divider()
 

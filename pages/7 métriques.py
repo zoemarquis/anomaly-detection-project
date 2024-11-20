@@ -5,7 +5,7 @@ import plotly.graph_objects as go
 
 import matplotlib.pyplot as plt
 
-st.title("Comparaison des modèles pour la détection d'attaques")
+st.title("Comparaison des modèles pour la détection d'attaque")
 
 dataset_choice = st.sidebar.selectbox(
     "Sélectionnez le type de données :", list(selec_dataset.keys())
