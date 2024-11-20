@@ -27,8 +27,8 @@ attack_choice = st.sidebar.selectbox(
 
 st.divider()
 
-df_attack = df_results[(df_results["attack_type"] == attack_types[attack_choice])]
-df_attack = df_attack[df_attack["data"] == selec_dataset[dataset_choice]]
+df_attack = df_results[(df_results["data"] == selec_dataset[dataset_choice] )]
+df_attack = df_attack[(df_results["attack_type"] == attack_types[attack_choice])]
 
 # si labeln sélectionné ajouter les données de l'article
 if attack_types[attack_choice] == "labeln":
@@ -46,9 +46,6 @@ df_attack_without_article = df_attack[
     & (df_attack["model_type"] != "SVM article")
     & (df_attack["model_type"] != "NB article")
 ]
-
-
-
 
 # df_selected = df_results[(df_results["filename"] == dataset_name)]
 df_selected = df_attack[
@@ -100,13 +97,12 @@ styled_df = (
         ),
         subset=df_selected.columns,
     )
-    .set_table_styles(
-        [
-            {"selector": "td, th", "props": [("text-align", "left")]}
-        ]  # Aligner à gauche tous les éléments (td et th)
-    )
+    # .set_table_styles(
+    #     [
+    #         {"selector": "td, th", "props": [("text-align", "left")]}
+    #     ]  # Aligner à gauche tous les éléments (td et th)
+    # )
 )
-
 
 # Diviser l'espace en 2 colonnes
 col1, col2 = st.columns(
