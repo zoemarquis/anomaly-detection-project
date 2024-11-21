@@ -1,6 +1,6 @@
 # Projet protection
 
-Ce projet vise à mettre en œuvre des traitements de données et une application web interactive pour visualiser les résultats. L'énoncé du projet est disponible ![ici](enonce.pdf).
+Ce projet vise à mettre en œuvre des traitements de données et une application web interactive pour visualiser les résultats. L'énoncé du projet est disponible [ici](enonce.pdf).
 
 --- 
 
@@ -11,8 +11,7 @@ Le dépôt contient :
 - Le code et les fichiers nécessaires pour exécuter la WebApp
 - Les notebooks utilisés pour les traitements de données
 - Un fichier ```requirements.txt``` listant les ackages nécessaires
-- Un rapport détaillant l'approche, les résultats et les analyses
-# TODO : link rapport
+- Un [rapport](Projet_protection_Rapport.pdf) détaillant l'approche, les résultats et les analyses
 
 ---
 
