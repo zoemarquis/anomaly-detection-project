@@ -27,8 +27,15 @@ attack_choice = st.sidebar.selectbox(
 
 st.divider()
 
-df_attack = df_results[(df_results["data"] == selec_dataset[dataset_choice] )]
-df_attack = df_attack[(df_results["attack_type"] == attack_types[attack_choice])]
+
+# df_attack = df_results[(df_results["data"] == selec_dataset[dataset_choice] )]
+# df_attack = df_attack[(df_results["attack_type"] == attack_types[attack_choice])]
+
+df_attack = df_results[
+    (df_results["data"] == selec_dataset[dataset_choice]) &
+    (df_results["attack_type"] == attack_types[attack_choice])
+]
+
 
 # si labeln sélectionné ajouter les données de l'article
 if attack_types[attack_choice] == "labeln":
