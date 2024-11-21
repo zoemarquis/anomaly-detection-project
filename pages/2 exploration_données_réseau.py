@@ -19,17 +19,19 @@ def chargement_des_donnees():
         df_net_4_clean = db["net_attack_4_clean"]
         df_net_norm_clean = db["net_norm_clean"]
         
+        df_matrix_clean = [df_net_1_clean, df_net_2_clean, df_net_3_clean, df_net_4_clean]
+        df_matrix_clean = pd.concat(df_matrix_clean, axis=0, ignore_index=True)
+        df_matrix_clean = df_matrix_clean.groupby('label', group_keys=False).apply(
+            lambda x: x.sample(frac=0.25, random_state=42)
+        )
+        
         df_net_1 = db["net_attack_1"]
         df_net_2 = db["net_attack_2"]
         df_net_3 = db["net_attack_3"]
         df_net_4 = db["net_attack_4"]
         df_net_norm = db["net_norm"]
         
-        pca_table_1 = db["pca_variance_table_net_1"]
-        pca_table_2 = db["pca_variance_table_net_2"]
-        pca_table_3 = db["pca_variance_table_net_3"]
-        pca_table_4 = db["pca_variance_table_net_4"]
-        pca_table_norm = db["pca_variance_table_net_norm"]
+        pca_table = db["pca_variance_table_df_net"]
         
         dataframes = {
             "Attaque 1": df_net_1,
@@ -46,15 +48,7 @@ def chargement_des_donnees():
             "Normal": df_net_norm_clean,
         }
 
-        pca_tables = {
-            "Attaque 1": pca_table_1,
-            "Attaque 2": pca_table_2,
-            "Attaque 3": pca_table_3,
-            "Attaque 4": pca_table_4,
-            "Normal": pca_table_norm,
-        }
-
-        return dataframes, dataframes_clean, pca_tables
+        return dataframes, dataframes_clean, pca_table, df_matrix_clean
 
 
     except KeyError as e:
@@ -62,7 +56,7 @@ def chargement_des_donnees():
         return {}
 
 
-dataframes, dataframes_clean, pca_tables = chargement_des_donnees()
+dataframes, dataframes_clean, pca_table, df_matrix = chargement_des_donnees()
 
 for key, df in dataframes.items():
     dataframes[key].columns = df.columns.str.strip()
@@ -77,7 +71,7 @@ with col1:
         label_counts = df["label"].value_counts()
         fig_label.add_trace(go.Bar(x=label_counts.index, y=label_counts.values, name=name))
 
-    fig_label.update_layout(title="Répartition des labels", xaxis_title="Label", yaxis_title="Nombre", barmode="stack")
+    fig_label.update_layout(title="Répartition des labels (données nettoyées)", xaxis_title="Label", yaxis_title="Nombre", barmode="stack")
     st.plotly_chart(fig_label)
     
 with col2:
@@ -91,19 +85,18 @@ with col2:
         label_counts = [df[df["label"] == label].shape[0] for df in dataframes_clean.values()]
         fig_label_by_file.add_trace(go.Bar(x=list(dataframes_clean.keys()), y=label_counts, name=str(label)))
 
-    fig_label_by_file.update_layout(title="Répartition des labels dans les fichiers", xaxis_title="Fichier", yaxis_title="Nombre", barmode="stack")
+    fig_label_by_file.update_layout(title="Répartition des labels dans les fichiers (données nettoyées)", xaxis_title="Fichier", yaxis_title="Nombre", barmode="stack")
 
     st.plotly_chart(fig_label_by_file)
 
 dataset_name = st.selectbox("Sélectionnez un dataset :", options=list(dataframes_clean.keys()))
 
-
+st.write(f"Un échantillon représentatif de 500 000 lignes du fichier sélectionné est utilisé.")
 
 if dataset_name:
     df = dataframes[dataset_name]
     df_clean = dataframes_clean[dataset_name]
-
-    # Sample pour éviter que ce soit trop long
+    
     sample_size = 500000
     df_sampled = df.sample(n=sample_size, random_state=42)
     df_clean_sampled = df_clean.sample(n=sample_size, random_state=42)
@@ -113,19 +106,19 @@ if dataset_name:
 
 
     # Statistiques sur les valeurs numériques
-    st.write("## Distribution des valeurs numériques continues")
+    st.write(f"## Distribution des valeurs numériques continues")
 
     columns_to_plot = ["size", "n_pkt_src", "n_pkt_dst"]
 
     cols = st.columns(3)
     for col, column_name in zip(cols, columns_to_plot):
         with col:
-            fig = px.box(df, x="label", y=column_name, color="label", title=f"Distribution pour {column_name}", labels={column_name: f"Valeurs de {column_name}", "label": "Label"})
+            fig = px.box(df, x="label", y=column_name, color="label", title=f"Distribution pour {column_name} (données initiales)", labels={column_name: f"Valeurs de {column_name}", "label": "Label"})
             st.plotly_chart(fig)
 
 
     # Nombre de valeurs uniques pour les colonnes discrètes
-    st.write(f"## Distribution des valeurs dicrètes")
+    st.write(f"## Distribution des valeurs discrètes")
 
     discrete_columns = ['mac_s', 'mac_d', 'ip_s', 'ip_d', 'sport', 'dport', 'proto', 'flags', 'modbus_fn', 'modbus_response']
 
@@ -134,13 +127,13 @@ if dataset_name:
     unique_counts_df = pd.DataFrame(list(unique_counts.items()), columns=['Column', 'Unique Values'])
     unique_counts_df = unique_counts_df.sort_values(by='Unique Values')
 
-    fig = px.bar(unique_counts_df, x='Unique Values', y='Column', orientation='h', title="Nombre de valeurs uniques par colonne discrète", labels={'Unique Values': "Nombre de valeurs uniques", 'Column': "Colonnes"})
+    fig = px.bar(unique_counts_df, x='Unique Values', y='Column', orientation='h', title="Nombre de valeurs uniques par colonne discrète (données initiales)", labels={'Unique Values': "Nombre de valeurs uniques", 'Column': "Colonnes"})
 
 
     st.plotly_chart(fig)
 
     # Statistiques sur les valeurs discrètes (peu de valeurs uniques)
-    st.write(f"### Ditribution des valeurs discrètes avec peu de valeurs uniques")
+    st.write(f"### Distribution des valeurs discrètes avec peu de valeurs uniques")
 
     columns_to_plot = ['mac_s', 'mac_d', 'ip_s', 'ip_d', 'proto', 'flags', 'modbus_fn']
 
@@ -150,17 +143,17 @@ if dataset_name:
     cols1 = st.columns(len(columns_row1))
     for col, column in zip(cols1, columns_row1):
         with col:
-            fig = px.histogram(df, x=column, color="label", barmode="stack", title=f"Distribution de {column}", labels={column: "Valeurs", "label": "Label"}, nbins=50)
+            fig = px.histogram(df, x=column, color="label", barmode="stack", title=f"Distribution {column} (données initiales)", labels={column: "Valeurs", "label": "Label"}, nbins=50)
             st.plotly_chart(fig, use_container_width=True)
 
     cols2 = st.columns(len(columns_row2))
     for col, column in zip(cols2, columns_row2):
         with col:
-            fig = px.histogram(df, x=column, color="label", barmode="stack", title=f"Distribution de {column}", labels={column: "Valeurs", "label": "Label"}, nbins=50)
+            fig = px.histogram(df, x=column, color="label", barmode="stack", title=f"Distribution {column} (données initiales)", labels={column: "Valeurs", "label": "Label"}, nbins=50)
             st.plotly_chart(fig, use_container_width=True)
         
     # Statistiques sur les valeurs discrètes (beaucoup de valeurs uniques)
-    st.write(f"### Ditribution des valeurs discrètes avec beaucoup de valeurs uniques")
+    st.write(f"### Distribution des valeurs discrètes avec beaucoup de valeurs uniques")
 
     columns_to_plot = ['sport', 'dport', 'modbus_response']
 
@@ -168,30 +161,31 @@ if dataset_name:
 
     for col, column in zip(cols, columns_to_plot):
         with col:
-            fig = px.histogram(df_clean, x=column, color="label", barmode="stack", title=f"Distribution de {column}", labels={column: "Valeurs", "label": "Label"}, nbins=50)
+            fig = px.histogram(df_clean, x=column, color="label", barmode="stack", title=f"Distribution {column} (données nettoyées)", labels={column: "Valeurs", "label": "Label"}, nbins=50)
             st.plotly_chart(fig, use_container_width=True)
 
-    # Changement du type pour être mieux géré par Streamlit
-    df = df.astype({col: 'str' for col in df.select_dtypes(include=['category']).columns})
-
-    object_cols = df.select_dtypes(include=["object"]).columns
-    ordinal_encoder = OrdinalEncoder()
-    df[object_cols] = ordinal_encoder.fit_transform(df[object_cols].astype(str))
     
 
     # Matrice de corrélation
-    correlation_matrix = df.corr()
+    df_matrix = df_matrix.astype({col: 'str' for col in df_matrix.select_dtypes(include=['category']).columns})
+        
+    object_cols = df_matrix.select_dtypes(include=["object"]).columns
+    ordinal_encoder = OrdinalEncoder()
+    df_matrix[object_cols] = ordinal_encoder.fit_transform(df_matrix[object_cols].astype(str))
 
-    st.write(f"### Matrice de corrélation")
+    correlation_matrix = df_matrix.corr()
+
+    st.write(f"## Matrice de corrélation (échantillon des 4 fichiers d'attaques)")
     fig = px.imshow(correlation_matrix, color_continuous_scale="RdBu", zmin=-1, zmax=1, height=600, width=600)
     st.plotly_chart(fig, use_container_width=True)
 
 
+
     # Affichage des résultats PCA
     st.write(f"## Réduction de  dimension - PCA")
-    st.write(f"### Variance expliquée")
+    st.write(f"### Variance expliquée (échantillon des 4 fichiers d'attaques)")
 
-    variance_table = pca_tables[dataset_name]
+    variance_table = pca_table
 
     #st.dataframe(variance_table)
 
