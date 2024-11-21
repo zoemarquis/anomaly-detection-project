@@ -37,8 +37,9 @@ def chargement_des_donnees():
             st.error(f"Erreur lors du chargement de {key}: {e}")
             return category, name, None
 
-    # Multithreading pour charger les données plus rapidement (environ 1min30)
-    with concurrent.futures.ThreadPoolExecutor() as executor:
+    # Limitation du nombre de threads
+    max_threads = 4
+    with concurrent.futures.ThreadPoolExecutor(max_workers=max_threads) as executor:
         futures = [
             executor.submit(charger_cle, key, category, name)
             for key, (category, name) in dataset_keys.items()
@@ -59,7 +60,6 @@ def chargement_des_donnees():
                 pca_tables[name] = data
 
     return dataframes, dataframes_clean, pca_tables
-
 
 
 dataframes, dataframes_clean, pca_tables = chargement_des_donnees()
