@@ -5,61 +5,61 @@ import plotly.express as px
 from sklearn.preprocessing import OrdinalEncoder
 from pickleshare import PickleShareDB
 import plotly.graph_objects as go
-import concurrent.futures
 
 # Chargement des données
 @st.cache_resource
 def chargement_des_donnees():
     db = PickleShareDB("./prep_data/kity/")
 
-    dataset_keys = {
-        "net_attack_1": ("dataframes", "Attaque 1"),
-        "net_attack_2": ("dataframes", "Attaque 2"),
-        "net_attack_3": ("dataframes", "Attaque 3"),
-        "net_attack_4": ("dataframes", "Attaque 4"),
-        "net_norm": ("dataframes", "Normal"),
-        "net_attack_1_clean": ("dataframes_clean", "Attaque 1"),
-        "net_attack_2_clean": ("dataframes_clean", "Attaque 2"),
-        "net_attack_3_clean": ("dataframes_clean", "Attaque 3"),
-        "net_attack_4_clean": ("dataframes_clean", "Attaque 4"),
-        "net_norm_clean": ("dataframes_clean", "Normal"),
-        "pca_variance_table_net_1": ("pca_tables", "Attaque 1"),
-        "pca_variance_table_net_2": ("pca_tables", "Attaque 2"),
-        "pca_variance_table_net_3": ("pca_tables", "Attaque 3"),
-        "pca_variance_table_net_4": ("pca_tables", "Attaque 4"),
-        "pca_variance_table_net_norm": ("pca_tables", "Normal"),
-    }
-
-    def charger_cle(key, category, name):
-        try:
-            return category, name, db[key]
-        except KeyError as e:
-            st.error(f"Erreur lors du chargement de {key}: {e}")
-            return category, name, None
-
-    # Limitation du nombre de threads
-    max_threads = 4
-    with concurrent.futures.ThreadPoolExecutor(max_workers=max_threads) as executor:
-        futures = [
-            executor.submit(charger_cle, key, category, name)
-            for key, (category, name) in dataset_keys.items()
-        ]
-        results = [future.result() for future in concurrent.futures.as_completed(futures)]
-
     dataframes = {}
-    dataframes_clean = {}
-    pca_tables = {}
+    try:
+        df_net_1_clean = db["net_attack_1_clean"]
+        df_net_2_clean = db["net_attack_2_clean"]
+        df_net_3_clean = db["net_attack_3_clean"]
+        df_net_4_clean = db["net_attack_4_clean"]
+        df_net_norm_clean = db["net_norm_clean"]
+        
+        df_net_1 = db["net_attack_1"]
+        df_net_2 = db["net_attack_2"]
+        df_net_3 = db["net_attack_3"]
+        df_net_4 = db["net_attack_4"]
+        df_net_norm = db["net_norm"]
+        
+        pca_table_1 = db["pca_variance_table_net_1"]
+        pca_table_2 = db["pca_variance_table_net_2"]
+        pca_table_3 = db["pca_variance_table_net_3"]
+        pca_table_4 = db["pca_variance_table_net_4"]
+        pca_table_norm = db["pca_variance_table_net_norm"]
+        
+        dataframes = {
+            "Attaque 1": df_net_1,
+            "Attaque 2": df_net_2,
+            "Attaque 3": df_net_3,
+            "Attaque 4": df_net_4,
+            "Normal": df_net_norm,
+        }
+        dataframes_clean = {
+            "Attaque 1": df_net_1_clean,
+            "Attaque 2": df_net_2_clean,
+            "Attaque 3": df_net_3_clean,
+            "Attaque 4": df_net_4_clean,
+            "Normal": df_net_norm_clean,
+        }
 
-    for category, name, data in results:
-        if data is not None:
-            if category == "dataframes":
-                dataframes[name] = data
-            elif category == "dataframes_clean":
-                dataframes_clean[name] = data
-            elif category == "pca_tables":
-                pca_tables[name] = data
+        pca_tables = {
+            "Attaque 1": pca_table_1,
+            "Attaque 2": pca_table_2,
+            "Attaque 3": pca_table_3,
+            "Attaque 4": pca_table_4,
+            "Normal": pca_table_norm,
+        }
 
-    return dataframes, dataframes_clean, pca_tables
+        return dataframes, dataframes_clean, pca_tables
+
+
+    except KeyError as e:
+        st.error(f"Erreur lors du chargement des données : {e}")
+        return {}
 
 
 dataframes, dataframes_clean, pca_tables = chargement_des_donnees()
