@@ -58,7 +58,31 @@ Assurez-vous d'avoir Python installé. Ensuite, exécutez :
 
 ### 3. Exécuter les notebooks
 Les notebooks doivent être exécutés dans l'ordre suivant :
-# TODO 
+    a_preparation_phy.ipynb
+    b_phy_CNN1D.ipynb
+    c_pca_phy.ipynb
+    d_KNN_phy.ipynb
+    e_CART_phy.ipynb
+    g_RandomForest_phy.ipynb
+    h_XGBoost_phy.ipynb
+    i_MLP_phy.ipynb
+
+    N_a_enregistrements_donnees_initiales.ipynb
+    N_a2_nettoyage_network.ipynb
+    N_a3_EAD_network.ipynb
+    N_b_pca_network.ipynb
+    N_b2_pca_table_variance.ipynb
+    N_d_preparation_pour_modeles_network.ipynb
+    N_e_KNN_network.ipynb
+    N_f_CART_network.ipynb
+    N_g_RF_network.ipynb
+    N_h_XGBoost_network.ipynb
+    N_i_MLP_network.ipynb
+
+
+
+
+
 
 ### 4. Lancer l'application Streamlit 
 Pour démarrer la WebApp: 

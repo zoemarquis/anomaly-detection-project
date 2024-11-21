@@ -1,7 +1,8 @@
-smatplotlib
+matplotlib
 memory-profiler # x
 
 numpy
+imblearn
 
 pandas
 pickleshare
