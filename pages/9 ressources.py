@@ -20,8 +20,10 @@ attack_choice = st.sidebar.selectbox(
     "Sélectionnez le type d'attaque :", list(attack_types.keys())
 )
 
-df_attack = df_results[(df_results["data"] == selec_dataset[dataset_choice] )]
-df_attack = df_attack[(df_results["attack_type"] == attack_types[attack_choice])]
+df_attack = df_results[
+    (df_results["data"] == selec_dataset[dataset_choice]) &
+    (df_results["attack_type"] == attack_types[attack_choice])
+]
 
 time_measures = df_attack[["model_type", "fit_time", "predict_time"]]
 memory_measures = df_attack[["model_type", "fit_memory_usage", "predict_memory_usage"]]
