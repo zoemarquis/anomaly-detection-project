@@ -19,17 +19,19 @@ def chargement_des_donnees():
         df_net_4_clean = db["net_attack_4_clean"]
         df_net_norm_clean = db["net_norm_clean"]
         
+        df_matrix_clean = [df_net_1_clean, df_net_2_clean, df_net_3_clean, df_net_4_clean]
+        df_matrix_clean = pd.concat(df_matrix_clean, axis=0, ignore_index=True)
+        df_matrix_clean = df_matrix_clean.groupby('label', group_keys=False).apply(
+            lambda x: x.sample(frac=0.25, random_state=42)
+        )
+        
         df_net_1 = db["net_attack_1"]
         df_net_2 = db["net_attack_2"]
         df_net_3 = db["net_attack_3"]
         df_net_4 = db["net_attack_4"]
         df_net_norm = db["net_norm"]
         
-        pca_table_1 = db["pca_variance_table_net_1"]
-        pca_table_2 = db["pca_variance_table_net_2"]
-        pca_table_3 = db["pca_variance_table_net_3"]
-        pca_table_4 = db["pca_variance_table_net_4"]
-        pca_table_norm = db["pca_variance_table_net_norm"]
+        pca_table = db["pca_variance_table_df_net"]
         
         dataframes = {
             "Attaque 1": df_net_1,
@@ -46,15 +48,7 @@ def chargement_des_donnees():
             "Normal": df_net_norm_clean,
         }
 
-        pca_tables = {
-            "Attaque 1": pca_table_1,
-            "Attaque 2": pca_table_2,
-            "Attaque 3": pca_table_3,
-            "Attaque 4": pca_table_4,
-            "Normal": pca_table_norm,
-        }
-
-        return dataframes, dataframes_clean, pca_tables
+        return dataframes, dataframes_clean, pca_table, df_matrix_clean
 
 
     except KeyError as e:
@@ -62,13 +56,13 @@ def chargement_des_donnees():
         return {}
 
 
-dataframes, dataframes_clean, pca_tables = chargement_des_donnees()
+dataframes, dataframes_clean, pca_table, df_matrix = chargement_des_donnees()
 
 for key, df in dataframes.items():
     dataframes[key].columns = df.columns.str.strip()
 
 st.write(f"# Exploration des jeux de données réseau")
-st.write(f"## Répartition des labels")
+st.write(f"## Répartition des labels (données nettoyées)")
 col1, col2 = st.columns(2)
 
 with col1:
@@ -113,7 +107,7 @@ if dataset_name:
 
 
     # Statistiques sur les valeurs numériques
-    st.write("## Distribution des valeurs numériques continues")
+    st.write(f"## Distribution des valeurs numériques continues")
 
     columns_to_plot = ["size", "n_pkt_src", "n_pkt_dst"]
 
@@ -171,27 +165,28 @@ if dataset_name:
             fig = px.histogram(df_clean, x=column, color="label", barmode="stack", title=f"Distribution de {column}", labels={column: "Valeurs", "label": "Label"}, nbins=50)
             st.plotly_chart(fig, use_container_width=True)
 
-    # Changement du type pour être mieux géré par Streamlit
-    df = df.astype({col: 'str' for col in df.select_dtypes(include=['category']).columns})
-
-    object_cols = df.select_dtypes(include=["object"]).columns
-    ordinal_encoder = OrdinalEncoder()
-    df[object_cols] = ordinal_encoder.fit_transform(df[object_cols].astype(str))
     
 
     # Matrice de corrélation
-    correlation_matrix = df.corr()
+    df_matrix = df_matrix.astype({col: 'str' for col in df_matrix.select_dtypes(include=['category']).columns})
+        
+    object_cols = df_matrix.select_dtypes(include=["object"]).columns
+    ordinal_encoder = OrdinalEncoder()
+    df_matrix[object_cols] = ordinal_encoder.fit_transform(df_matrix[object_cols].astype(str))
 
-    st.write(f"### Matrice de corrélation")
+    correlation_matrix = df_matrix.corr()
+
+    st.write(f"## Matrice de corrélation des 4 fichiers d'attaques")
     fig = px.imshow(correlation_matrix, color_continuous_scale="RdBu", zmin=-1, zmax=1, height=600, width=600)
     st.plotly_chart(fig, use_container_width=True)
 
 
+
     # Affichage des résultats PCA
-    st.write(f"## Réduction de  dimension - PCA")
+    st.write(f"## Réduction de  dimension des 4 fichiers d'attaques - PCA")
     st.write(f"### Variance expliquée")
 
-    variance_table = pca_tables[dataset_name]
+    variance_table = pca_table
 
     #st.dataframe(variance_table)
 
