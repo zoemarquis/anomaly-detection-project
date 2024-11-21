@@ -57,6 +57,7 @@ Assurez-vous d'avoir Python installé. Ensuite, exécutez :
 
 ### 3. Exécuter les notebooks
 Les notebooks doivent être exécutés dans l'ordre suivant :
+
     a_preparation_phy.ipynb
     b_phy_CNN1D.ipynb
     c_pca_phy.ipynb
