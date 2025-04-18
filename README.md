@@ -1,6 +1,13 @@
-# Projet protection
+## 🛡️ Présentation du projet
 
-Ce projet vise à mettre en œuvre des traitements de données et une application web interactive pour visualiser les résultats. L'énoncé du projet est disponible [ici](enonce.pdf).
+Ce projet vise à développer et comparer différents modèles de machine learning pour détecter des comportements anormaux dans un système cyber-physique simulant un réseau de distribution d’eau. L’analyse porte sur deux types de données : les données issues de capteurs physiques et celles provenant du trafic réseau.
+
+Les objectifs incluent l'analyse exploratoire des données, la mise en œuvre de modèles classiques (KNN, CART, Random Forest, XGBoost, MLP) et de deep learning (CNN1D), ainsi qu’une évaluation fine des performances et des ressources consommées.
+
+Une application web interactive développée avec Streamlit permet de visualiser les résultats, explorer les données et comparer les modèles facilement.
+
+📄 L'énoncé complet du projet est disponible [ici](enonce.pdf).  
+📘 Le [rapport détaillé](Projet_protection_Rapport.pdf) présente les choix méthodologiques, les résultats et les enseignements du projet.
 
 --- 
 
@@ -21,7 +28,8 @@ Le dépôt contient :
 1. Téléchargez les données via le lien fourni dans l'énoncé
 2. Décompresssez les fichiers dans un répertoire ```datasets```
 
-vous devez obtenir la structure suivante   
+vous devez obtenir la structure suivante :
+```
 datasets/  
 │  
 ├── Network dataset/  
@@ -46,7 +54,8 @@ datasets/
 │   ├── phy_att_4.csv  
 │   └── phy_norm.csv  
 │  
-└── README.xlsx  
+└── README.xlsx
+```
 
 Assurez-vous que les fichiers sont organisés comme indiqué avant de passer à l'étape suivante.
 
