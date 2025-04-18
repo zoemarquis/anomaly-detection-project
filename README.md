@@ -25,7 +25,7 @@ Le dépôt contient :
 ## 🚀 Instructions pour exécuter le projet
 
 ### 1. Télécharger et préparer les données
-1. Téléchargez les données via le lien fourni dans l'énoncé
+1. Téléchargez les données via [ce lien](https://ieee-dataport.org/open-access/hardware-loop-water-distribution-testbed-wdt-dataset-cyber-physical-security-testing)
 2. Décompressez les fichiers dans un répertoire ```datasets```
 
 Vous devez obtenir la structure suivante :
