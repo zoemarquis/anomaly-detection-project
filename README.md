@@ -1,3 +1,5 @@
+# Anomaly detection in a simulated cyber-physical system using machine learning models
+[![License: MIT](https://img.shields.io/badge/License-MIT-lightgrey.svg)](https://opensource.org/licenses/MIT)
 ## 🛡️ Présentation du projet
 
 Ce projet vise à développer et comparer différents modèles de machine learning pour détecter des comportements anormaux dans un système cyber-physique simulant un réseau de distribution d’eau. L’analyse porte sur deux types de données : les données issues de capteurs physiques et celles provenant du trafic réseau.
