@@ -9,8 +9,8 @@ Les objectifs incluent l'analyse exploratoire des données, la mise en œuvre de
 
 Une application web interactive développée avec Streamlit permet de visualiser les résultats, explorer les données et comparer les modèles facilement.
 
-📄 L'énoncé complet du projet est disponible [ici (en anglais)](project-assignment-en.pdf).  
-📘 Le [rapport détaillé (en français)](project-report-fr.pdf) présente les choix méthodologiques, les résultats et les enseignements du projet.
+📄 L'énoncé complet du projet est disponible [ici (en anglais)](./ressources/project-assignment-en.pdf).  
+📘 Le [rapport détaillé (en français)](./ressources/project-report-fr.pdf) présente les choix méthodologiques, les résultats et les enseignements du projet.
 
 --- 
 
@@ -21,7 +21,7 @@ Le dépôt contient :
 - Le code et les fichiers nécessaires pour exécuter la WebApp
 - Les notebooks utilisés pour les traitements de données
 - Un fichier ```requirements.txt``` listant les packages nécessaires
-- Un [rapport (en français)](project-report-fr.pdf) détaillant l'approche méthodologique, les résultats et les analyses
+- Un [rapport (en français)](./ressources/project-report-fr.pdf) détaillant l'approche méthodologique, les résultats et les analyses
 
 ---
 
